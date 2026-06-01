@@ -37,8 +37,6 @@ The application relies on a strictly relational data layout mapping user privile
 
 
 ```
-
-```
               ┌───────────────────┐
               │     USER MODEL    │
               └─────────┬─────────┘
@@ -55,7 +53,6 @@ The application relies on a strictly relational data layout mapping user privile
 
 ```
 
-```
 
 * **User Document:** Captures structural identity attributes (`Name`, `Email`, `Hashed Password`, `Avatar Location`, and active bio details).
 * **Project Document:** Configured with hard pointer parameters pointing to a master User ID (`Owner`) alongside a relational array of authorized participant IDs mapped to discrete operational permission markers (`Members`).
