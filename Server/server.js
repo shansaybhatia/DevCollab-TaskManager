@@ -3,12 +3,15 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
+const { setServers } = require('node:dns/promises');
+setServers(['1.1.1.1', '8.8.8.8']);
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect('mongodb+srv://vaibhavdhiman265_db_user:XdRJm0A6AniMinEU@taskmanager.gmkzjji.mongodb.net/DevCollab?retryWrites=true&w=majority')
+mongoose.connect(process.env.MONGO_URL)
     .then(() => console.log('Successfully connected to Mongodb Atlas!'))
     .catch((error) => console.log('Database connection is failed:', error));
 
