@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 const { setServers } = require('node:dns/promises');
@@ -8,12 +9,16 @@ setServers(['1.1.1.1', '8.8.8.8']);
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:5173', credentials: true}));
 app.use(express.json());
+app.use(cookieParser());
 
 mongoose.connect(process.env.MONGO_URL)
     .then(() => console.log('Successfully connected to Mongodb Atlas!'))
     .catch((error) => console.log('Database connection is failed:', error));
+
+const authRoutes = require('./routes/authRoutes');
+app.use('/api/auth', authRoutes);
 
 app.get('/', (req,res) => {
     res.send('TaskManager is working!');
