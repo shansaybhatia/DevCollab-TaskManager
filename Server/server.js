@@ -18,7 +18,11 @@ mongoose.connect(process.env.MONGO_URL)
     .catch((error) => console.log('Database connection is failed:', error));
 
 const authRoutes = require('./routes/authRoutes');
+const userRouter = require('./Routes/userRoutes');
+
 app.use('/api/auth', authRoutes);
+app.use('/api/users',userRoutes);
+
 
 app.get('/', (req,res) => {
     res.send('TaskManager is working!');
