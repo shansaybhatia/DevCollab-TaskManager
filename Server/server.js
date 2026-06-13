@@ -18,10 +18,12 @@ mongoose.connect(process.env.MONGO_URL)
     .catch((error) => console.log('Database connection is failed:', error));
 
 const authRoutes = require('./routes/authRoutes');
-const userRouter = require('./Routes/userRoutes');
+const userRoutes = require('./Routes/userRoutes');
+const projectRoutes = require('./Routes/projectRoutes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users',userRoutes);
+app.use('/api/projects',projectRoutes);
 
 
 app.get('/', (req,res) => {
