@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const dashboardRoutes = require('./routes/dashboardRoutes');
 require('dotenv').config();
 
 const { setServers } = require('node:dns/promises');
@@ -24,6 +25,7 @@ const projectRoutes = require('./Routes/projectRoutes');
 app.use('/api/auth', authRoutes);
 app.use('/api/users',userRoutes);
 app.use('/api/projects',projectRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 
 app.get('/', (req,res) => {
