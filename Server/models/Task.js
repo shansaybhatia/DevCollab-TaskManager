@@ -1,35 +1,55 @@
 const mongoose = require('mongoose');
 
-const taskSchema = new mongoose.Schema({
-    title:{
-        type: String,
-        required: true,
+const taskSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
     },
-    description:{
-        type: String,
+    description: {
+      type: String,
+      default: '',
+      trim: true,
     },
-    project:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Project',
-        required: true,
+    project: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Project',
+      required: true,
     },
-    assignedTo:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+    assignedTo: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
     },
-    status:{
-        type: String,
-        enum: ['to-do','inprogress','completed'],
-        default: 'to-do',
+    status: {
+      type: String,
+      enum: ['to-do', 'inprogress', 'completed'],
+      default: 'to-do',
     },
-    priority:{
-        type: String,
-        enum: ['low','medium','high'],
-        default: 'medium',
+    priority: {
+      type: String,
+      enum: ['low', 'medium', 'high'],
+      default: 'medium',
     },
-    duedate:{
-        type: Date,
+    duedate: {
+      type: Date,
     },
-}, { timestamps: true});
+  },
+  { timestamps: true }
+);
+
+// Virtual alias so task.dueDate and task.duedate work interchangeably
+taskSchema
+  .virtual('dueDate')
+  .get(function () {
+    return this.duedate;
+  })
+  .set(function (value) {
+    this.duedate = value;
+  });
+
+taskSchema.set('toJSON', { virtuals: true });
+taskSchema.set('toObject', { virtuals: true });
 
 module.exports = mongoose.model('Task', taskSchema);

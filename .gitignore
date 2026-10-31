@@ -4,14 +4,17 @@
 node_modules/
 client/node_modules/
 server/node_modules/
+Server/node_modules/
 
 # ==========================================
 # Secret Environment Keys (CRUCIAL SECURITY)
 # ==========================================
 .env
-.env.local
-.env.development.local
-.env.production.local
+.env.*
+!.env.example
+Server/.env
+Server/.env.*
+!Server/.env.example
 
 # ==========================================
 # Production Build Outputs
@@ -19,6 +22,7 @@ server/node_modules/
 dist/
 build/
 .cache/
+client/dist/
 
 # ==========================================
 # Editor & OS Trash Files
