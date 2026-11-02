@@ -79,7 +79,7 @@ export default function Profile() {
               type="button"
               onClick={() => fileRef.current?.click()}
               disabled={isUploading}
-              className="absolute inset-0 flex items-center justify-center rounded-[var(--radius-pill)] bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+              className="absolute inset-0 flex items-center justify-center rounded-full bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
               aria-label="Upload avatar image"
             >
               <Camera className="h-6 w-6 text-white" aria-hidden="true" />
@@ -120,9 +120,9 @@ export default function Profile() {
               onChange={(e) => setBio(e.target.value)}
               placeholder="Engineering focus, team role, or notes..."
               rows={3}
-              className="w-full rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-2)] px-4 py-3
+              className="w-full rounded-[var(--radius-btn)] border border-[var(--color-rule-2)] bg-[var(--color-paper-2)] px-4 py-2.5
                 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-muted)]
-                focus:border-[var(--color-focus)] focus:bg-[var(--color-paper-3)] focus:outline-none
+                focus:border-[var(--color-focus)] focus:bg-[var(--color-paper-3)] focus:outline-none focus:ring-1 focus:ring-[var(--color-focus)]
                 transition-colors duration-200 resize-none"
             />
           </div>

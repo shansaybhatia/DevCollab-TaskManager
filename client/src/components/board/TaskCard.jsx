@@ -40,7 +40,7 @@ export default function TaskCard({ task, onEdit, onDelete }) {
               e.stopPropagation();
               setShowMenu(!showMenu);
             }}
-            className="p-1 rounded-[var(--radius-pill)] text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper-3)] transition-colors cursor-pointer"
+            className="p-1 rounded-[var(--radius-btn)] text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper-3)] transition-colors cursor-pointer"
             aria-label="Task options"
           >
             <MoreVertical className="h-4 w-4" aria-hidden="true" />

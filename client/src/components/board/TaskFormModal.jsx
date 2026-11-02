@@ -81,9 +81,9 @@ export default function TaskFormModal({
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Add context or acceptance criteria..."
             rows={3}
-            className="w-full rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-3)] px-3.5 py-2.5
+            className="w-full rounded-[var(--radius-btn)] border border-[var(--color-rule-2)] bg-[var(--color-paper-2)] px-3.5 py-2.5
               text-sm text-[var(--color-ink)] placeholder:text-[var(--color-muted)]
-              focus-visible:border-[var(--color-focus)] focus-visible:outline-none
+              focus-visible:border-[var(--color-focus)] focus-visible:outline-none focus:ring-1 focus:ring-[var(--color-focus)]
               transition-colors resize-none"
           />
         </div>
@@ -91,15 +91,15 @@ export default function TaskFormModal({
         <div className="grid grid-cols-2 gap-3 text-left">
           {/* Priority */}
           <div className="space-y-1.5">
-            <label className="block text-xs font-medium text-[var(--color-ink-2)]">
+            <label className="block text-xs font-semibold text-[var(--color-ink-2)]">
               Priority
             </label>
             <select
               value={priority}
               onChange={(e) => setPriority(e.target.value)}
-              className="w-full rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-3)] px-3 py-2
-                text-xs text-[var(--color-ink)] focus-visible:border-[var(--color-focus)] focus-visible:outline-none
-                transition-colors font-mono"
+              className="w-full rounded-[var(--radius-btn)] border border-[var(--color-rule-2)] bg-[var(--color-paper-2)] px-3 py-2
+                text-xs text-[var(--color-ink)] focus-visible:border-[var(--color-focus)] focus-visible:outline-none focus:ring-1 focus:ring-[var(--color-focus)]
+                transition-colors"
             >
               <option value="low">low</option>
               <option value="medium">medium</option>
@@ -109,15 +109,15 @@ export default function TaskFormModal({
 
           {/* Assignee */}
           <div className="space-y-1.5">
-            <label className="block text-xs font-medium text-[var(--color-ink-2)]">
+            <label className="block text-xs font-semibold text-[var(--color-ink-2)]">
               Assignee
             </label>
             <select
               value={assignedTo}
               onChange={(e) => setAssignedTo(e.target.value)}
-              className="w-full rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-3)] px-3 py-2
-                text-xs text-[var(--color-ink)] focus-visible:border-[var(--color-focus)] focus-visible:outline-none
-                transition-colors font-mono"
+              className="w-full rounded-[var(--radius-btn)] border border-[var(--color-rule-2)] bg-[var(--color-paper-2)] px-3 py-2
+                text-xs text-[var(--color-ink)] focus-visible:border-[var(--color-focus)] focus-visible:outline-none focus:ring-1 focus:ring-[var(--color-focus)]
+                transition-colors"
             >
               <option value="">unassigned</option>
               {members.map((m) => {

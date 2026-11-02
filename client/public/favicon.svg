@@ -1,10 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none">
-  <rect width="48" height="48" rx="12" fill="oklch(21% 0.009 250)"/>
-  <rect x="0.5" y="0.5" width="47" height="47" rx="11.5" stroke="oklch(31% 0.01 250)"/>
-  <!-- Modern Geometric DevCollab Mark: Two interlocked engineering matrices forming a dynamic D & C prism with acute kinetic signal -->
-  <path d="M12 14h10c6.627 0 12 5.373 12 12s-5.373 12-12 12H12V14z" stroke="oklch(42% 0.012 250)" stroke-width="2.5" stroke-linejoin="round"/>
-  <path d="M16 19h6c3.866 0 7 3.134 7 7s-3.134 7-7 7h-6V19z" fill="oklch(29% 0.05 80)" stroke="oklch(82% 0.15 80)" stroke-width="2"/>
-  <circle cx="22" cy="26" r="3" fill="oklch(82% 0.15 80)"/>
-  <!-- Focus kinetic accent -->
-  <path d="M28 17l6 9-6 9" stroke="oklch(77% 0.12 245)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect width="48" height="48" rx="12" fill="oklch(13.5% 0.012 235)"/>
+  <rect x="0.5" y="0.5" width="47" height="47" rx="11.5" stroke="oklch(28% 0.014 235)"/>
+  <!-- Modern Geometric DevCollab Mark: Engineering matrix with Vantage Chromatic Lime accent -->
+  <path d="M12 14h10c6.627 0 12 5.373 12 12s-5.373 12-12 12H12V14z" stroke="oklch(36% 0.016 235)" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M16 19h6c3.866 0 7 3.134 7 7s-3.134 7-7 7h-6V19z" fill="oklch(89% 0.19 126 / 0.18)" stroke="oklch(89% 0.19 126)" stroke-width="2"/>
+  <circle cx="22" cy="26" r="3" fill="oklch(89% 0.19 126)"/>
+  <path d="M28 17l6 9-6 9" stroke="oklch(76% 0.12 215)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

@@ -183,7 +183,7 @@ export default function ProjectBoard() {
         <div className="flex items-center gap-4">
           <button
             onClick={() => navigate('/projects')}
-            className="p-2 rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-2)] text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:border-[var(--color-accent)] transition-colors cursor-pointer"
+            className="p-2 rounded-[var(--radius-btn)] border border-[var(--color-rule-2)] bg-[var(--color-paper-2)] text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:border-[var(--color-accent)] transition-colors cursor-pointer"
             aria-label="Back to projects"
           >
             <ArrowLeft className="h-4.5 w-4.5" aria-hidden="true" />
@@ -194,7 +194,7 @@ export default function ProjectBoard() {
               <h1 className="text-xl font-bold text-[var(--color-ink)] tracking-tight">
                 {project?.title || 'Project sprint board'}
               </h1>
-              <span className="inline-flex items-center gap-1.5 text-xs font-mono text-[var(--color-accent)] bg-[color-mix(in_oklch,var(--color-accent)_12%,transparent)] px-2.5 py-0.5 rounded-[var(--radius-pill)]">
+              <span className="inline-flex items-center gap-1.5 text-xs text-[var(--color-accent)] bg-[color-mix(in_oklch,var(--color-accent)_12%,transparent)] px-2.5 py-0.5 rounded-full border border-[color-mix(in_oklch,var(--color-accent)_30%,transparent)] font-semibold">
                 <Radio className="h-3 w-3 animate-pulse" aria-hidden="true" />
                 <span>Live sync</span>
               </span>
@@ -315,7 +315,7 @@ export default function ProjectBoard() {
               {membersList.map((m, i) => (
                 <div
                   key={m._id || i}
-                  className="flex items-center gap-3 p-2 rounded-[var(--radius-pill)] hover:bg-[var(--color-paper-3)] transition-colors"
+                  className="flex items-center gap-3 p-2.5 rounded-[var(--radius-btn)] hover:bg-[var(--color-paper-3)] transition-colors border border-transparent hover:border-[var(--color-rule)]"
                 >
                   <Avatar src={m.avatar} name={m.name || ''} size="sm" />
                   <div className="min-w-0 flex-1 text-left">

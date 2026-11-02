@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, ArrowRight, Eye, EyeOff, Sparkles } from 'lucide-react';
 import useAuthStore from '../stores/authStore';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
@@ -23,7 +23,7 @@ export default function Login() {
     setIsLoading(true);
     try {
       await login(email, password);
-      toast.success('Welcome back');
+      toast.success('Welcome back to DevCollab');
       navigate('/dashboard');
     } catch (err) {
       toast.error(
@@ -36,17 +36,23 @@ export default function Login() {
   };
 
   return (
-    <div className="glass-panel p-8 sm:p-10 space-y-6 shadow-2xl">
-      <div>
-        <h2 className="text-2xl font-bold text-[var(--color-ink)] tracking-tight">
-          Sign in
-        </h2>
-        <p className="text-sm text-[var(--color-muted)] mt-1.5 leading-relaxed">
+    <div className="glass-panel p-8 sm:p-10 space-y-6 shadow-2xl border-[var(--color-rule-2)] bg-[var(--color-paper-2)]/80 backdrop-blur-2xl">
+      <div className="space-y-1.5">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-[var(--color-ink)] tracking-tight">
+            Sign in
+          </h2>
+          <span className="flex items-center gap-1.5 text-xs text-[var(--color-accent)] font-medium">
+            <Sparkles className="h-3.5 w-3.5" />
+            Vantage
+          </span>
+        </div>
+        <p className="text-sm text-[var(--color-muted)] leading-relaxed">
           Access your real-time developer workspaces and sprint boards.
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
         <Input
           label="Email address"
           type="email"
@@ -58,22 +64,24 @@ export default function Login() {
           autoFocus
         />
 
-        <div className="space-y-2 text-left">
-          <label className="block text-xs font-medium text-[var(--color-ink-2)] tracking-wide">
-            Password
-          </label>
+        <div className="space-y-1.5 text-left">
+          <div className="flex items-center justify-between">
+            <label className="block text-xs font-semibold text-[var(--color-ink-2)] tracking-wide">
+              Password
+            </label>
+          </div>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[var(--color-muted)]">
-              <Lock className="h-4.5 w-4.5" aria-hidden="true" />
+              <Lock className="h-4 w-4" aria-hidden="true" />
             </div>
             <input
               type={showPassword ? 'text' : 'password'}
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-2)] pl-10 pr-10 py-3
+              className="w-full rounded-[var(--radius-btn)] border border-[var(--color-rule-2)] bg-[var(--color-paper-2)] pl-10 pr-10 py-2.5
                 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-muted)]
-                focus:border-[var(--color-focus)] focus:bg-[var(--color-paper-3)] focus:outline-none
+                focus:border-[var(--color-focus)] focus:bg-[var(--color-paper-3)] focus:outline-none focus:ring-1 focus:ring-[var(--color-focus)]
                 transition-colors duration-200"
               required
             />
@@ -96,10 +104,11 @@ export default function Login() {
           <Button
             type="submit"
             isLoading={isLoading}
-            className="w-full py-3.5 text-sm font-semibold shadow-lg"
+            size="lg"
+            className="w-full text-sm font-bold tracking-wide"
           >
             <span>Sign in to workspace</span>
-            <ArrowRight className="h-4 w-4 ml-1" aria-hidden="true" />
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Button>
         </div>
       </form>
@@ -109,9 +118,9 @@ export default function Login() {
           Need a developer account?{' '}
           <Link
             to="/register"
-            className="font-semibold text-[var(--color-accent)] hover:underline inline-flex items-center gap-1 ml-1"
+            className="font-semibold text-[var(--color-accent)] hover:underline hover:text-[var(--color-accent-hi)] transition-colors inline-flex items-center gap-1"
           >
-            <span>Create account</span>
+            Create account
           </Link>
         </p>
       </div>
