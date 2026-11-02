@@ -1,43 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Button from '../ui/Button';
 import Input from '../ui/Input';
 import Modal from '../ui/Modal';
 
-export default function TaskFormModal({
-  isOpen,
+function TaskFormContent({
+  editingTask,
+  members = [],
   onClose,
   onSubmit,
-  members = [],
-  editingTask = null,
 }) {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [priority, setPriority] = useState('medium');
-  const [assignedTo, setAssignedTo] = useState('');
-  const [dueDate, setDueDate] = useState('');
+  const [title, setTitle] = useState(editingTask?.title || '');
+  const [description, setDescription] = useState(editingTask?.description || '');
+  const [priority, setPriority] = useState(editingTask?.priority || 'medium');
+  const [assignedTo, setAssignedTo] = useState(
+    editingTask?.assignedTo?._id || editingTask?.assignedTo || ''
+  );
+  const [dueDate, setDueDate] = useState(
+    editingTask?.duedate
+      ? new Date(editingTask.duedate).toISOString().split('T')[0]
+      : ''
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    if (editingTask) {
-      setTitle(editingTask.title || '');
-      setDescription(editingTask.description || '');
-      setPriority(editingTask.priority || 'medium');
-      setAssignedTo(
-        editingTask.assignedTo?._id || editingTask.assignedTo || ''
-      );
-      setDueDate(
-        editingTask.duedate
-          ? new Date(editingTask.duedate).toISOString().split('T')[0]
-          : ''
-      );
-    } else {
-      setTitle('');
-      setDescription('');
-      setPriority('medium');
-      setAssignedTo('');
-      setDueDate('');
-    }
-  }, [editingTask, isOpen]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,99 +40,117 @@ export default function TaskFormModal({
   };
 
   return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <Input
+        label="Title"
+        placeholder="Task title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        autoFocus
+        required
+      />
+
+      <div className="space-y-1.5 text-left">
+        <label className="block text-xs font-semibold text-slate-700">
+          Description
+        </label>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Add context or acceptance criteria..."
+          rows={3}
+          className="w-full rounded-[var(--radius-btn)] border border-slate-200 bg-white px-3.5 py-2.5
+            text-sm text-slate-900 placeholder:text-slate-400
+            focus-visible:border-indigo-500 focus-visible:outline-none focus:ring-2 focus:ring-indigo-500/20
+            transition-colors resize-none shadow-xs"
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 text-left">
+        {/* Priority */}
+        <div className="space-y-1.5">
+          <label className="block text-xs font-semibold text-slate-700">
+            Priority
+          </label>
+          <select
+            value={priority}
+            onChange={(e) => setPriority(e.target.value)}
+            className="w-full rounded-[var(--radius-btn)] border border-slate-200 bg-white px-3 py-2
+              text-xs text-slate-900 focus-visible:border-indigo-500 focus-visible:outline-none focus:ring-2 focus:ring-indigo-500/20
+              transition-colors shadow-xs"
+          >
+            <option value="low">low</option>
+            <option value="medium">medium</option>
+            <option value="high">high</option>
+          </select>
+        </div>
+
+        {/* Assignee */}
+        <div className="space-y-1.5">
+          <label className="block text-xs font-semibold text-slate-700">
+            Assignee
+          </label>
+          <select
+            value={assignedTo}
+            onChange={(e) => setAssignedTo(e.target.value)}
+            className="w-full rounded-[var(--radius-btn)] border border-slate-200 bg-white px-3 py-2
+              text-xs text-slate-900 focus-visible:border-indigo-500 focus-visible:outline-none focus:ring-2 focus:ring-indigo-500/20
+              transition-colors shadow-xs"
+          >
+            <option value="">unassigned</option>
+            {members.map((m) => {
+              const memberId = m.User?._id || m.user?._id || m._id;
+              const memberName = m.User?.name || m.user?.name || m.name;
+              return (
+                <option key={memberId} value={memberId}>
+                  {memberName}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+      </div>
+
+      {/* Due Date */}
+      <Input
+        label="Due date"
+        type="date"
+        value={dueDate}
+        onChange={(e) => setDueDate(e.target.value)}
+      />
+
+      <div className="flex justify-end gap-2.5 pt-2">
+        <Button type="button" variant="ghost" onClick={onClose} size="sm">
+          Cancel
+        </Button>
+        <Button type="submit" isLoading={isSubmitting} size="sm">
+          {editingTask ? 'Save changes' : 'Create task'}
+        </Button>
+      </div>
+    </form>
+  );
+}
+
+export default function TaskFormModal({
+  isOpen,
+  onClose,
+  onSubmit,
+  members = [],
+  editingTask = null,
+}) {
+  return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
       title={editingTask ? 'Edit task' : 'Create task'}
     >
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <Input
-          label="Title"
-          placeholder="Task title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          autoFocus
-          required
-        />
-
-        <div className="space-y-1.5 text-left">
-          <label className="block text-xs font-semibold text-slate-700">
-            Description
-          </label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Add context or acceptance criteria..."
-            rows={3}
-            className="w-full rounded-[var(--radius-btn)] border border-slate-200 bg-white px-3.5 py-2.5
-              text-sm text-slate-900 placeholder:text-slate-400
-              focus-visible:border-indigo-500 focus-visible:outline-none focus:ring-2 focus:ring-indigo-500/20
-              transition-colors resize-none shadow-xs"
-          />
-        </div>
-
-        <div className="grid grid-cols-2 gap-3 text-left">
-          {/* Priority */}
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-slate-700">
-              Priority
-            </label>
-            <select
-              value={priority}
-              onChange={(e) => setPriority(e.target.value)}
-              className="w-full rounded-[var(--radius-btn)] border border-slate-200 bg-white px-3 py-2
-                text-xs text-slate-900 focus-visible:border-indigo-500 focus-visible:outline-none focus:ring-2 focus:ring-indigo-500/20
-                transition-colors shadow-xs"
-            >
-              <option value="low">low</option>
-              <option value="medium">medium</option>
-              <option value="high">high</option>
-            </select>
-          </div>
-
-          {/* Assignee */}
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-slate-700">
-              Assignee
-            </label>
-            <select
-              value={assignedTo}
-              onChange={(e) => setAssignedTo(e.target.value)}
-              className="w-full rounded-[var(--radius-btn)] border border-slate-200 bg-white px-3 py-2
-                text-xs text-slate-900 focus-visible:border-indigo-500 focus-visible:outline-none focus:ring-2 focus:ring-indigo-500/20
-                transition-colors shadow-xs"
-            >
-              <option value="">unassigned</option>
-              {members.map((m) => {
-                const memberId = m.User?._id || m.user?._id || m._id;
-                const memberName = m.User?.name || m.user?.name || m.name;
-                return (
-                  <option key={memberId} value={memberId}>
-                    {memberName}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
-        </div>
-
-        {/* Due Date */}
-        <Input
-          label="Due date"
-          type="date"
-          value={dueDate}
-          onChange={(e) => setDueDate(e.target.value)}
-        />
-
-        <div className="flex justify-end gap-2.5 pt-2">
-          <Button type="button" variant="ghost" onClick={onClose} size="sm">
-            Cancel
-          </Button>
-          <Button type="submit" isLoading={isSubmitting} size="sm">
-            {editingTask ? 'Save changes' : 'Create task'}
-          </Button>
-        </div>
-      </form>
+      <TaskFormContent
+        key={editingTask ? editingTask._id : 'new'}
+        editingTask={editingTask}
+        members={members}
+        onClose={onClose}
+        onSubmit={onSubmit}
+      />
     </Modal>
   );
 }

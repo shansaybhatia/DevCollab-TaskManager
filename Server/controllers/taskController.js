@@ -37,6 +37,11 @@ exports.createTask = async (req, res) => {
     await task.save();
     await task.populate('assignedTo', 'name email avatar');
 
+    const io = req.app.get('io');
+    if (io) {
+      io.to(projectId.toString()).emit('taskCreated', task);
+    }
+
     res.status(201).json(task);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });

@@ -19,15 +19,15 @@ export default function Avatar({ src, name = '', size = 'md', className = '' }) 
       <img
         src={src}
         alt={name}
-        className={`${sizeClasses[size]} rounded-[var(--radius-pill)] object-cover border border-[var(--color-rule)] ${className}`}
+        className={`${sizeClasses[size]} rounded-full object-cover border border-slate-200 shadow-xs ${className}`}
       />
     );
   }
 
   return (
     <div
-      className={`${sizeClasses[size]} rounded-[var(--radius-pill)] bg-[var(--color-paper-3)] border border-[var(--color-rule-2)] 
-        flex items-center justify-center text-[var(--color-ink)] font-mono font-medium ${className}`}
+      className={`${sizeClasses[size]} rounded-full bg-slate-100 border border-slate-200 
+        flex items-center justify-center text-slate-700 font-semibold shadow-xs ${className}`}
     >
       {initials || '?'}
     </div>

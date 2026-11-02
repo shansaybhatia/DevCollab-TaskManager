@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import Logo from '../ui/Logo';
-import { Layers, Radio, ShieldCheck, Terminal, Users, CheckCircle2, Zap } from 'lucide-react';
+import { Layers, Radio, ShieldCheck, Terminal, CheckCircle2 } from 'lucide-react';
 
 export default function AuthLayout() {
   return (

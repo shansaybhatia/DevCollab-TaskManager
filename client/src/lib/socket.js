@@ -30,5 +30,9 @@ export const joinProject = (projectId) => {
   const s = getSocket();
   if (s.connected) {
     s.emit('joinProject', projectId);
+  } else {
+    s.once('connect', () => {
+      s.emit('joinProject', projectId);
+    });
   }
 };

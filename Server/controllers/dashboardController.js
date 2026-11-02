@@ -5,7 +5,7 @@ exports.getDashboardstats = async (req, res) => {
   try {
     const userProjects = await Project.find({
       $or: [{ owner: req.user._id }, { 'members.user': req.user._id }],
-    });
+    }).select('_id');
 
     const projectIds = userProjects.map((p) => p._id);
 

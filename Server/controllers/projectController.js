@@ -1,5 +1,6 @@
 const Project = require('../models/Project');
 const User = require('../models/User');
+const Task = require('../models/Task');
 
 // GET /api/projects - List all projects where user is owner or member
 exports.getProjects = async (req, res) => {
@@ -84,6 +85,9 @@ exports.deleteProject = async (req, res) => {
         message: 'Project not found or you are not the owner of this project',
       });
     }
+
+    // Clean up all tasks associated with this project to prevent orphaned data
+    await Task.deleteMany({ project: projectId });
 
     res.status(200).json({ message: 'Project deleted successfully' });
   } catch (error) {

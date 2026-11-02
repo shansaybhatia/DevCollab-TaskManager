@@ -40,6 +40,14 @@ const useTaskStore = create((set) => ({
     }));
   },
 
+  // Handle real-time task creation from socket
+  handleSocketTaskCreate: (newTask) => {
+    set((state) => {
+      if (state.tasks.some((t) => t._id === newTask._id)) return state;
+      return { tasks: [newTask, ...state.tasks] };
+    });
+  },
+
   // Handle real-time task update from socket
   handleSocketTaskUpdate: (updatedTask) => {
     set((state) => ({

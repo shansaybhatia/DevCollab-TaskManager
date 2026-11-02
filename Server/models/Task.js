@@ -39,6 +39,9 @@ const taskSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+taskSchema.index({ project: 1, status: 1 });
+taskSchema.index({ project: 1, createdAt: -1 });
+
 // Virtual alias so task.dueDate and task.duedate work interchangeably
 taskSchema
   .virtual('dueDate')

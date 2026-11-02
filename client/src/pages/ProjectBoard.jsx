@@ -36,6 +36,7 @@ export default function ProjectBoard() {
     createTask,
     updateTask,
     deleteTask,
+    handleSocketTaskCreate,
     handleSocketTaskUpdate,
     handleSocketTaskDelete,
     clearTasks,
@@ -57,26 +58,28 @@ export default function ProjectBoard() {
     if (projects.length === 0) fetchProjects();
 
     return () => clearTasks();
-  }, [projectId]);
+  }, [projectId, fetchTasks, fetchProjects, clearTasks, projects.length]);
 
   useEffect(() => {
     if (!projectId) return;
     const socket = connectSocket();
     socketJoinProject(projectId);
 
-    socket.on('taskUpdated', (updatedTask) => {
-      handleSocketTaskUpdate(updatedTask);
-    });
-
-    socket.on('taskDeleted', (deletedTaskId) => {
-      handleSocketTaskDelete(deletedTaskId);
-    });
+    socket.on('taskCreated', handleSocketTaskCreate);
+    socket.on('taskUpdated', handleSocketTaskUpdate);
+    socket.on('taskDeleted', handleSocketTaskDelete);
 
     return () => {
-      socket.off('taskUpdated');
-      socket.off('taskDeleted');
+      socket.off('taskCreated', handleSocketTaskCreate);
+      socket.off('taskUpdated', handleSocketTaskUpdate);
+      socket.off('taskDeleted', handleSocketTaskDelete);
     };
-  }, [projectId]);
+  }, [
+    projectId,
+    handleSocketTaskCreate,
+    handleSocketTaskUpdate,
+    handleSocketTaskDelete,
+  ]);
 
   // Compute accurate unique member roster (never duplicates)
   const getMembersList = () => {

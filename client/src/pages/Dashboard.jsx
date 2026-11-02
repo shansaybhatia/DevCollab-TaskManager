@@ -7,7 +7,6 @@ import {
   FolderKanban,
   ArrowRight,
   TrendingUp,
-  Zap,
 } from 'lucide-react';
 import api from '../lib/api';
 import useAuthStore from '../stores/authStore';

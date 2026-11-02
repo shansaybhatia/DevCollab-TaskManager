@@ -48,7 +48,7 @@ export default function TaskCard({ task, onEdit, onDelete }) {
 
           {showMenu && (
             <div
-              className="absolute right-0 top-8 z-[var(--z-dropdown)] w-36 rounded-[var(--radius-card)] border border-[var(--color-rule)] bg-[var(--color-paper-2)] shadow-2xl py-1 text-xs"
+              className="absolute right-0 top-8 z-[var(--z-dropdown)] w-36 rounded-[var(--radius-card)] border border-slate-200 bg-white shadow-xl py-1 text-xs"
               onClick={(e) => e.stopPropagation()}
             >
               <button
@@ -56,7 +56,7 @@ export default function TaskCard({ task, onEdit, onDelete }) {
                   setShowMenu(false);
                   onEdit(task);
                 }}
-                className="w-full flex items-center gap-2 px-3.5 py-2 text-[var(--color-ink)] hover:bg-[var(--color-paper-3)] transition-colors cursor-pointer"
+                className="w-full flex items-center gap-2 px-3.5 py-2 text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
               >
                 <Edit3 className="h-3.5 w-3.5" aria-hidden="true" />
                 <span>Edit task</span>
@@ -66,7 +66,7 @@ export default function TaskCard({ task, onEdit, onDelete }) {
                   setShowMenu(false);
                   onDelete(task._id);
                 }}
-                className="w-full flex items-center gap-2 px-3.5 py-2 text-[var(--color-error)] hover:bg-[color-mix(in_oklch,var(--color-error)_15%,transparent)] transition-colors cursor-pointer"
+                className="w-full flex items-center gap-2 px-3.5 py-2 text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
               >
                 <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
                 <span>Delete</span>
@@ -77,23 +77,23 @@ export default function TaskCard({ task, onEdit, onDelete }) {
       </div>
 
       {/* Title */}
-      <h4 className="text-sm font-semibold text-[var(--color-ink)] leading-snug line-clamp-2">
+      <h4 className="text-sm font-semibold text-slate-900 leading-snug line-clamp-2">
         {task.title}
       </h4>
 
       {/* Description */}
       {task.description && (
-        <p className="text-xs text-[var(--color-muted)] line-clamp-2 leading-relaxed">
+        <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
           {task.description}
         </p>
       )}
 
       {/* Metadata */}
-      <div className="flex items-center justify-between pt-3 border-t border-slate-800 text-xs">
+      <div className="flex items-center justify-between pt-3 border-t border-slate-200/80 text-xs">
         {task.duedate ? (
           <div
             className={`inline-flex items-center gap-1.5 ${
-              isOverdue ? 'text-rose-400' : 'text-slate-400'
+              isOverdue ? 'text-rose-600 font-medium' : 'text-slate-500'
             }`}
           >
             <Calendar className="h-3.5 w-3.5" aria-hidden="true" />
