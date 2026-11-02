@@ -60,9 +60,9 @@ export default function TaskFormModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={editingTask ? 'Edit Task' : 'Create Task'}
+      title={editingTask ? 'Edit task' : 'Create task'}
     >
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <Input
           label="Title"
           placeholder="Task title"
@@ -72,56 +72,54 @@ export default function TaskFormModal({
           required
         />
 
-        <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-slate-700">
+        <div className="space-y-1.5 text-left">
+          <label className="block text-xs font-medium text-[var(--color-ink-2)]">
             Description
           </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Add details about this task..."
+            placeholder="Add context or acceptance criteria..."
             rows={3}
-            className="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5
-              text-sm text-slate-900 placeholder:text-slate-400
-              focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500
-              transition-colors duration-150 resize-none"
+            className="w-full rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-3)] px-3.5 py-2.5
+              text-sm text-[var(--color-ink)] placeholder:text-[var(--color-muted)]
+              focus-visible:border-[var(--color-focus)] focus-visible:outline-none
+              transition-colors resize-none"
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3 text-left">
           {/* Priority */}
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-slate-700">
+            <label className="block text-xs font-medium text-[var(--color-ink-2)]">
               Priority
             </label>
             <select
               value={priority}
               onChange={(e) => setPriority(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5
-                text-sm text-slate-900
-                focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500
-                transition-colors duration-150"
+              className="w-full rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-3)] px-3 py-2
+                text-xs text-[var(--color-ink)] focus-visible:border-[var(--color-focus)] focus-visible:outline-none
+                transition-colors font-mono"
             >
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
+              <option value="low">low</option>
+              <option value="medium">medium</option>
+              <option value="high">high</option>
             </select>
           </div>
 
-          {/* Assign */}
+          {/* Assignee */}
           <div className="space-y-1.5">
-            <label className="block text-sm font-medium text-slate-700">
-              Assign To
+            <label className="block text-xs font-medium text-[var(--color-ink-2)]">
+              Assignee
             </label>
             <select
               value={assignedTo}
               onChange={(e) => setAssignedTo(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5
-                text-sm text-slate-900
-                focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500
-                transition-colors duration-150"
+              className="w-full rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-3)] px-3 py-2
+                text-xs text-[var(--color-ink)] focus-visible:border-[var(--color-focus)] focus-visible:outline-none
+                transition-colors font-mono"
             >
-              <option value="">Unassigned</option>
+              <option value="">unassigned</option>
               {members.map((m) => {
                 const memberId = m.User?._id || m.user?._id || m._id;
                 const memberName = m.User?.name || m.user?.name || m.name;
@@ -137,18 +135,18 @@ export default function TaskFormModal({
 
         {/* Due Date */}
         <Input
-          label="Due Date"
+          label="Due date"
           type="date"
           value={dueDate}
           onChange={(e) => setDueDate(e.target.value)}
         />
 
-        <div className="flex justify-end gap-3 pt-2">
-          <Button type="button" variant="ghost" onClick={onClose}>
+        <div className="flex justify-end gap-2.5 pt-2">
+          <Button type="button" variant="ghost" onClick={onClose} size="sm">
             Cancel
           </Button>
-          <Button type="submit" isLoading={isSubmitting}>
-            {editingTask ? 'Update Task' : 'Create Task'}
+          <Button type="submit" isLoading={isSubmitting} size="sm">
+            {editingTask ? 'Save changes' : 'Create task'}
           </Button>
         </div>
       </form>

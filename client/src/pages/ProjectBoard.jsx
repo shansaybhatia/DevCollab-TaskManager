@@ -5,8 +5,7 @@ import {
   ArrowLeft,
   UserPlus,
   Users,
-  Sparkles,
-  Layers,
+  Radio,
 } from 'lucide-react';
 import useTaskStore from '../stores/taskStore';
 import useProjectStore from '../stores/projectStore';
@@ -49,7 +48,6 @@ export default function ProjectBoard() {
 
   const project = projects.find((p) => p._id === projectId);
 
-  // Fetch project & task data
   useEffect(() => {
     if (!projectId) return;
     fetchTasks(projectId);
@@ -58,7 +56,6 @@ export default function ProjectBoard() {
     return () => clearTasks();
   }, [projectId]);
 
-  // Real-time socket sync
   useEffect(() => {
     if (!projectId) return;
     const socket = connectSocket();
@@ -78,7 +75,6 @@ export default function ProjectBoard() {
     };
   }, [projectId]);
 
-  // Build members list (owner + members)
   const getMembersList = () => {
     if (!project) return [];
     const members = [];
@@ -87,7 +83,7 @@ export default function ProjectBoard() {
       const ownerObj =
         typeof project.owner === 'object'
           ? project.owner
-          : { _id: project.owner, name: 'Project Owner' };
+          : { _id: project.owner, name: 'Owner' };
       members.push(ownerObj);
     }
 
@@ -106,7 +102,7 @@ export default function ProjectBoard() {
   const handleCreateTask = async (taskData) => {
     try {
       await createTask({ ...taskData, projectId });
-      toast.success('Task created successfully');
+      toast.success('Task created');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to create task');
       throw err;
@@ -125,7 +121,7 @@ export default function ProjectBoard() {
   };
 
   const handleDeleteTask = async (taskId) => {
-    if (!confirm('Are you sure you want to delete this task?')) return;
+    if (!confirm('Delete this task?')) return;
     try {
       await deleteTask(taskId);
       toast.success('Task deleted');
@@ -140,17 +136,16 @@ export default function ProjectBoard() {
     setIsInviting(true);
     try {
       await inviteMember(projectId, inviteEmail.trim());
-      toast.success('Invitation sent to team member!');
+      toast.success('Invitation sent');
       setInviteEmail('');
       setShowInvite(false);
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to send invite');
+      toast.error(err.response?.data?.message || 'Failed to invite');
     } finally {
       setIsInviting(false);
     }
   };
 
-  // Drag & Drop
   const handleDragStart = (task) => {
     setDraggedTask(task);
   };
@@ -165,13 +160,7 @@ export default function ProjectBoard() {
 
     try {
       await updateTask(currentTask._id, { status: newStatus });
-      const statusTitle =
-        newStatus === 'to-do'
-          ? 'To Do'
-          : newStatus === 'inprogress'
-          ? 'In Progress'
-          : 'Completed';
-      toast.success(`Moved to ${statusTitle}`);
+      toast.success(`Moved to ${newStatus}`);
     } catch (err) {
       toast.error('Failed to move task');
     }
@@ -188,55 +177,47 @@ export default function ProjectBoard() {
   const membersList = getMembersList();
 
   return (
-    <div className="animate-fade-in space-y-6 max-w-7xl mx-auto">
+    <div className="space-y-6 max-w-6xl">
       {/* Board Header Bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xs">
-        <div className="flex items-center gap-4">
+      <div className="console-panel p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
           <button
             onClick={() => navigate('/projects')}
-            className="p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-500 
-              hover:bg-slate-100 hover:text-slate-900 transition-all cursor-pointer active:scale-95"
-            title="Back to projects"
+            className="p-1.5 rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-3)] text-[var(--color-muted)] hover:text-[var(--color-ink)] transition-colors cursor-pointer"
+            aria-label="Back to projects"
           >
-            <ArrowLeft className="h-4.5 w-4.5" />
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           </button>
 
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-                {project?.title || 'Interactive Kanban Board'}
+              <h1 className="text-lg font-semibold text-[var(--color-ink)] tracking-tight">
+                {project?.title || 'Project board'}
               </h1>
-              <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                Live Sync
+              <span className="inline-flex items-center gap-1 text-[11px] font-mono text-[var(--color-cool)] bg-[var(--color-cool-soft)] px-2 py-0.5 rounded-[var(--radius-pill)]">
+                <Radio className="h-2.5 w-2.5 animate-pulse" aria-hidden="true" />
+                <span>live</span>
               </span>
             </div>
             {project?.description && (
-              <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">
+              <p className="text-xs text-[var(--color-muted)] mt-0.5 line-clamp-1">
                 {project.description}
               </p>
             )}
           </div>
         </div>
 
-        {/* Action Controls & Members */}
+        {/* Actions & Roster */}
         <div className="flex items-center gap-3">
-          {/* Member Avatars */}
-          <div className="flex -space-x-2 mr-1">
+          <div className="flex -space-x-1.5 mr-1">
             {membersList.slice(0, 4).map((m, i) => (
               <Avatar
                 key={m._id || i}
                 src={m.avatar}
                 name={m.name || 'Member'}
                 size="sm"
-                className="ring-2 ring-white shadow-xs"
               />
             ))}
-            {membersList.length > 4 && (
-              <div className="h-8 w-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-600 ring-2 ring-white shadow-xs">
-                +{membersList.length - 4}
-              </div>
-            )}
           </div>
 
           <Button
@@ -244,7 +225,6 @@ export default function ProjectBoard() {
             size="sm"
             icon={UserPlus}
             onClick={() => setShowInvite(true)}
-            className="border-slate-200"
           >
             Invite
           </Button>
@@ -256,15 +236,14 @@ export default function ProjectBoard() {
               setEditingTask(null);
               setShowTaskForm(true);
             }}
-            className="shadow-sm shadow-indigo-500/20"
           >
-            New Task
+            New task
           </Button>
         </div>
       </div>
 
       {/* Kanban Board Columns Container */}
-      <div className="flex gap-6 overflow-x-auto pb-6 pt-2">
+      <div className="flex gap-4 overflow-x-auto pb-4">
         {STATUSES.map((status) => (
           <KanbanColumn
             key={status}
@@ -282,7 +261,7 @@ export default function ProjectBoard() {
         ))}
       </div>
 
-      {/* Task Creation & Edit Modal */}
+      {/* Task Modal */}
       <TaskFormModal
         isOpen={showTaskForm}
         onClose={() => {
@@ -294,58 +273,56 @@ export default function ProjectBoard() {
         editingTask={editingTask}
       />
 
-      {/* Invite Teammates Modal */}
+      {/* Invite Modal */}
       <Modal
         isOpen={showInvite}
         onClose={() => setShowInvite(false)}
-        title="Invite Teammates to Project"
+        title="Invite team member"
         size="sm"
       >
         <form onSubmit={handleInvite} className="space-y-4">
           <Input
-            label="Collaborator Email"
+            label="Email"
             type="email"
-            placeholder="developer@company.com"
+            placeholder="colleague@devcollab.io"
             value={inviteEmail}
             onChange={(e) => setInviteEmail(e.target.value)}
             autoFocus
           />
-          <div className="flex justify-end gap-3 pt-2">
+          <div className="flex justify-end gap-2.5 pt-2">
             <Button
               type="button"
               variant="ghost"
               onClick={() => setShowInvite(false)}
+              size="sm"
             >
               Cancel
             </Button>
-            <Button type="submit" isLoading={isInviting} icon={UserPlus}>
-              Send Invitation
+            <Button type="submit" isLoading={isInviting} size="sm">
+              Send invitation
             </Button>
           </div>
         </form>
 
-        {/* Existing Member List */}
         {membersList.length > 0 && (
-          <div className="mt-6 pt-5 border-t border-slate-100">
-            <div className="flex items-center gap-2 mb-3">
-              <Users className="h-4 w-4 text-slate-400" />
-              <h4 className="text-xs font-bold text-slate-600 uppercase tracking-wider">
-                Current Workspace Members ({membersList.length})
-              </h4>
+          <div className="mt-5 pt-4 border-t border-[var(--color-rule)]">
+            <div className="flex items-center gap-1.5 mb-2.5 text-xs font-mono text-[var(--color-muted)]">
+              <Users className="h-3.5 w-3.5" aria-hidden="true" />
+              <span>Workspace members ({membersList.length})</span>
             </div>
-            <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+            <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
               {membersList.map((m, i) => (
                 <div
                   key={m._id || i}
-                  className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 transition-colors"
+                  className="flex items-center gap-2.5 p-1.5 rounded-[var(--radius-pill)] hover:bg-[var(--color-paper-3)] transition-colors"
                 >
                   <Avatar src={m.avatar} name={m.name || ''} size="sm" />
-                  <div className="min-w-0 flex-1">
-                    <p className="text-xs font-bold text-slate-900 truncate">
-                      {m.name || 'Team Member'}
+                  <div className="min-w-0 flex-1 text-left">
+                    <p className="text-xs font-medium text-[var(--color-ink)] truncate">
+                      {m.name || 'Member'}
                     </p>
-                    <p className="text-[11px] text-slate-400 truncate">
-                      {m.email || 'Member of project'}
+                    <p className="text-[11px] font-mono text-[var(--color-muted)] truncate">
+                      {m.email || ''}
                     </p>
                   </div>
                 </div>

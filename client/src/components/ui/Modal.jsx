@@ -32,23 +32,22 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' })
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-[var(--z-modal)] flex items-center justify-center p-4 bg-black/75"
       onClick={(e) => e.target === overlayRef.current && onClose()}
     >
       <div
-        className={`${sizeClasses[size]} w-full bg-white rounded-xl shadow-xl animate-scale-in`}
+        className={`${sizeClasses[size]} w-full bg-[var(--color-paper-2)] border border-[var(--color-rule)] rounded-[var(--radius-card)] shadow-2xl`}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
-          <h2 className="text-lg font-semibold text-slate-900">{title}</h2>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-rule)]">
+          <h2 className="text-sm font-semibold text-[var(--color-ink)]">{title}</h2>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+            className="p-1 rounded-[var(--radius-pill)] text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper-3)] transition-colors cursor-pointer"
+            aria-label="Close dialog"
           >
-            <X className="h-5 w-5" />
+            <X className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
-        {/* Body */}
         <div className="px-6 py-5">{children}</div>
       </div>
     </div>

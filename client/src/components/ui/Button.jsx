@@ -1,22 +1,5 @@
 import { forwardRef } from 'react';
 
-const variants = {
-  primary:
-    'bg-indigo-500 text-white hover:bg-indigo-600 active:bg-indigo-700 shadow-sm',
-  secondary:
-    'bg-slate-100 text-slate-700 hover:bg-slate-200 active:bg-slate-300',
-  danger: 'bg-red-500 text-white hover:bg-red-600 active:bg-red-700 shadow-sm',
-  ghost: 'text-slate-600 hover:bg-slate-100 active:bg-slate-200',
-  outline:
-    'border border-slate-300 text-slate-700 hover:bg-slate-50 active:bg-slate-100',
-};
-
-const sizes = {
-  sm: 'px-3 py-1.5 text-sm',
-  md: 'px-4 py-2 text-sm',
-  lg: 'px-5 py-2.5 text-base',
-};
-
 const Button = forwardRef(
   (
     {
@@ -27,17 +10,39 @@ const Button = forwardRef(
       disabled,
       isLoading,
       icon: Icon,
+      type = 'button',
       ...props
     },
     ref
   ) => {
+    const baseClasses =
+      'inline-flex items-center justify-center gap-2 font-medium transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed select-none focus-visible:outline-2 focus-visible:outline-offset-2';
+
+    const sizeStyles = {
+      sm: 'px-3 py-1.5 text-xs rounded-[var(--radius-pill)]',
+      md: 'px-4 py-2 text-sm rounded-[var(--radius-pill)]',
+      lg: 'px-5 py-2.5 text-base rounded-[var(--radius-pill)]',
+    };
+
+    const variantStyles = {
+      primary:
+        'bg-[var(--color-accent)] text-[var(--color-accent-ink)] hover:bg-[oklch(88%_0.15_80)] active:bg-[oklch(76%_0.14_80)] font-semibold',
+      secondary:
+        'bg-[var(--color-paper-2)] text-[var(--color-ink)] border border-[var(--color-rule)] hover:border-[var(--color-rule-2)] hover:bg-[var(--color-paper)]',
+      outline:
+        'border border-[var(--color-rule)] text-[var(--color-ink-2)] hover:border-[var(--color-rule-2)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper-2)]',
+      ghost:
+        'text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper-2)]',
+      danger:
+        'bg-[var(--color-bad-soft)] text-[var(--color-bad)] border border-[var(--color-bad)] hover:bg-[var(--color-bad)] hover:text-[var(--color-paper)]',
+    };
+
     return (
       <button
         ref={ref}
+        type={type}
         disabled={disabled || isLoading}
-        className={`inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 cursor-pointer
-          disabled:opacity-50 disabled:cursor-not-allowed
-          ${variants[variant]} ${sizes[size]} ${className}`}
+        className={`${baseClasses} ${sizeStyles[size]} ${variantStyles[variant]} ${className}`}
         {...props}
       >
         {isLoading ? (
@@ -45,6 +50,7 @@ const Button = forwardRef(
             className="animate-spin h-4 w-4"
             viewBox="0 0 24 24"
             fill="none"
+            aria-hidden="true"
           >
             <circle
               className="opacity-25"
@@ -61,7 +67,7 @@ const Button = forwardRef(
             />
           </svg>
         ) : Icon ? (
-          <Icon className="h-4 w-4" />
+          <Icon className="h-4 w-4" aria-hidden="true" />
         ) : null}
         {children}
       </button>

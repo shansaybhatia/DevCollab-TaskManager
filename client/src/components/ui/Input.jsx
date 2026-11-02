@@ -3,32 +3,34 @@ import { forwardRef } from 'react';
 const Input = forwardRef(
   ({ label, error, className = '', icon: Icon, ...props }, ref) => {
     return (
-      <div className="space-y-1.5">
+      <div className="space-y-1.5 text-left">
         {label && (
-          <label className="block text-sm font-medium text-slate-700">
+          <label className="block text-xs font-medium text-[var(--color-ink-2)]">
             {label}
           </label>
         )}
         <div className="relative">
           {Icon && (
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Icon className="h-4 w-4 text-slate-400" />
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[var(--color-muted)]">
+              <Icon className="h-4 w-4" aria-hidden="true" />
             </div>
           )}
           <input
             ref={ref}
-            className={`w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5
-              text-sm text-slate-900 placeholder:text-slate-400
-              focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500
-              transition-colors duration-150
-              disabled:bg-slate-50 disabled:text-slate-500
-              ${Icon ? 'pl-10' : ''}
-              ${error ? 'border-red-400 focus:ring-red-500/20 focus:border-red-500' : ''}
+            className={`w-full rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-3)] px-3.5 py-2.5
+              text-sm text-[var(--color-ink)] placeholder:text-[var(--color-muted)]
+              focus-visible:border-[var(--color-focus)] focus-visible:outline-none
+              transition-colors
+              disabled:opacity-40 disabled:cursor-not-allowed
+              ${Icon ? 'pl-9' : ''}
+              ${error ? 'border-[var(--color-bad)]' : ''}
               ${className}`}
             {...props}
           />
         </div>
-        {error && <p className="text-sm text-red-500">{error}</p>}
+        {error && (
+          <p className="text-xs text-[var(--color-bad)] mt-1 font-mono">{error}</p>
+        )}
       </div>
     );
   }

@@ -56,80 +56,83 @@ export default function Profile() {
   };
 
   return (
-    <div className="animate-fade-in max-w-2xl">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-900">Profile</h1>
-        <p className="text-slate-500 mt-1">Manage your account settings</p>
+    <div className="space-y-6 max-w-2xl">
+      <div>
+        <h1 className="text-2xl font-semibold text-[var(--color-ink)] tracking-tight">
+          Profile
+        </h1>
+        <p className="text-xs text-[var(--color-muted)] mt-1 font-mono">
+          Developer account settings and preferences
+        </p>
       </div>
 
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        {/* Avatar section */}
-        <div className="bg-gradient-to-r from-indigo-500 to-purple-500 h-28" />
-        <div className="px-6 pb-6">
-          <div className="flex items-end gap-4 -mt-10 mb-6">
-            <div className="relative group">
-              <Avatar
-                src={user?.avatar}
-                name={user?.name || ''}
-                size="xl"
-                className="ring-4 ring-white"
-              />
-              <button
-                type="button"
-                onClick={() => fileRef.current?.click()}
-                disabled={isUploading}
-                className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 
-                  opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-              >
-                <Camera className="h-5 w-5 text-white" />
-              </button>
-              <input
-                ref={fileRef}
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleAvatarChange}
-              />
-            </div>
-            <div className="mb-1">
-              <p className="font-semibold text-slate-900 text-lg">
-                {user?.name}
-              </p>
-              <p className="text-sm text-slate-500">{user?.email}</p>
-            </div>
+      <div className="console-panel p-6 space-y-6">
+        {/* Avatar */}
+        <div className="flex items-center gap-4">
+          <div className="relative group">
+            <Avatar
+              src={user?.avatar}
+              name={user?.name || ''}
+              size="xl"
+            />
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              disabled={isUploading}
+              className="absolute inset-0 flex items-center justify-center rounded-[var(--radius-pill)] bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+              aria-label="Upload avatar image"
+            >
+              <Camera className="h-5 w-5 text-white" aria-hidden="true" />
+            </button>
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleAvatarChange}
+            />
+          </div>
+          <div>
+            <p className="font-semibold text-sm text-[var(--color-ink)]">
+              {user?.name || 'Developer'}
+            </p>
+            <p className="text-xs text-[var(--color-muted)] font-mono">
+              {user?.email}
+            </p>
+          </div>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleSave} className="space-y-4">
+          <Input
+            label="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Your name"
+          />
+
+          <div className="space-y-1.5 text-left">
+            <label className="block text-xs font-medium text-[var(--color-ink-2)]">
+              Bio
+            </label>
+            <textarea
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              placeholder="Engineering focus, team role, or notes..."
+              rows={3}
+              className="w-full rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-3)] px-3.5 py-2.5
+                text-sm text-[var(--color-ink)] placeholder:text-[var(--color-muted)]
+                focus-visible:border-[var(--color-focus)] focus-visible:outline-none
+                transition-colors resize-none"
+            />
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSave} className="space-y-5">
-            <Input
-              label="Display Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Your name"
-            />
-            <div className="space-y-1.5">
-              <label className="block text-sm font-medium text-slate-700">
-                Bio
-              </label>
-              <textarea
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
-                placeholder="Tell us about yourself..."
-                rows={3}
-                className="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5
-                  text-sm text-slate-900 placeholder:text-slate-400
-                  focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500
-                  transition-colors duration-150 resize-none"
-              />
-            </div>
-
-            <div className="flex justify-end pt-2">
-              <Button type="submit" isLoading={isSaving} icon={Save}>
-                Save Changes
-              </Button>
-            </div>
-          </form>
-        </div>
+          <div className="flex justify-end pt-2">
+            <Button type="submit" isLoading={isSaving} icon={Save} size="sm">
+              Save changes
+            </Button>
+          </div>
+        </form>
       </div>
     </div>
   );

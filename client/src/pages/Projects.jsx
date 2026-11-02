@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Search, FolderKanban, Trash2, Users, ArrowUpRight, ShieldCheck } from 'lucide-react';
+import { Plus, Search, FolderKanban, Trash2, Users, ArrowUpRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import useProjectStore from '../stores/projectStore';
 import useAuthStore from '../stores/authStore';
@@ -8,6 +8,7 @@ import Modal from '../components/ui/Modal';
 import Input from '../components/ui/Input';
 import EmptyState from '../components/ui/EmptyState';
 import Spinner from '../components/ui/Spinner';
+import Badge from '../components/ui/Badge';
 import toast from 'react-hot-toast';
 
 export default function Projects() {
@@ -35,7 +36,7 @@ export default function Projects() {
     setIsCreating(true);
     try {
       const project = await createProject(title.trim(), description.trim());
-      toast.success('Project workspace created!');
+      toast.success('Project workspace created');
       setShowCreate(false);
       setTitle('');
       setDescription('');
@@ -49,7 +50,7 @@ export default function Projects() {
 
   const handleDelete = async (e, projectId) => {
     e.stopPropagation();
-    if (!confirm('Are you sure you want to permanently delete this project?')) return;
+    if (!confirm('Are you sure you want to delete this project?')) return;
     try {
       await deleteProject(projectId);
       toast.success('Project deleted');
@@ -73,54 +74,52 @@ export default function Projects() {
   }
 
   return (
-    <div className="animate-fade-in space-y-6 max-w-7xl mx-auto">
-      {/* Top Header */}
+    <div className="space-y-6 max-w-5xl">
+      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight sm:text-3xl">
-            Workspaces & Projects
+          <h1 className="text-2xl font-semibold text-[var(--color-ink)] tracking-tight">
+            Projects
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
-            Organize tasks, collaborate across teams, and manage workflows.
+          <p className="text-xs text-[var(--color-muted)] mt-1 font-mono">
+            Workspaces and collaborative task boards
           </p>
         </div>
-        <Button icon={Plus} onClick={() => setShowCreate(true)} className="shadow-md shadow-indigo-500/20">
-          Create Workspace
+        <Button icon={Plus} onClick={() => setShowCreate(true)} size="sm">
+          New project
         </Button>
       </div>
 
-      {/* Filter and Search Bar */}
+      {/* Search */}
       {projects.length > 0 && (
-        <div className="flex items-center justify-between gap-4 max-w-md">
+        <div className="max-w-xs">
           <Input
-            placeholder="Search projects by title or description..."
+            placeholder="Search projects..."
             icon={Search}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="bg-white/80 backdrop-blur-sm"
           />
         </div>
       )}
 
-      {/* Projects Grid */}
+      {/* Grid */}
       {filtered.length === 0 && projects.length === 0 ? (
         <EmptyState
           icon={FolderKanban}
-          title="No projects initialized yet"
-          description="Create your first team workspace to begin assigning tasks, tracking progress, and collaborating."
+          title="No projects initialized"
+          description="Create a project workspace to start delegating tasks and managing sprints."
           action={
-            <Button icon={Plus} onClick={() => setShowCreate(true)} className="shadow-md">
-              Create Your First Project
+            <Button icon={Plus} onClick={() => setShowCreate(true)} size="sm">
+              Create project
             </Button>
           }
         />
       ) : filtered.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-2xl border border-slate-200">
-          <p className="text-base font-semibold text-slate-700">No matching projects found</p>
-          <p className="text-xs text-slate-400 mt-1">Try adjusting your search criteria</p>
+        <div className="console-panel p-8 text-center text-xs text-[var(--color-muted)]">
+          No projects match &quot;{search}&quot;
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((project) => {
             const isOwner =
               project.owner === user?.id ||
@@ -133,58 +132,43 @@ export default function Projects() {
               <div
                 key={project._id}
                 onClick={() => navigate(`/projects/${project._id}`)}
-                className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200/90 
-                  bg-white p-6 shadow-xs hover:shadow-xl hover:border-indigo-300 card-hover-lift cursor-pointer transition-all duration-300"
+                className="console-panel-interactive p-5 flex flex-col justify-between cursor-pointer group"
               >
-                {/* Subtle top accent gradient */}
-                <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-400 opacity-80 group-hover:opacity-100 transition-opacity" />
-
                 <div>
-                  <div className="flex items-start justify-between gap-2 mb-4">
-                    <div className="p-3 rounded-xl bg-indigo-50/80 text-indigo-600 transition-transform duration-300 group-hover:scale-110 shadow-xs">
-                      <FolderKanban className="h-5 w-5" />
-                    </div>
-                    
-                    <div className="flex items-center gap-1.5">
+                  <div className="flex items-start justify-between gap-2 mb-3">
+                    <FolderKanban className="h-5 w-5 text-[var(--color-accent)]" aria-hidden="true" />
+                    <div className="flex items-center gap-1">
                       {isOwner && (
                         <button
                           onClick={(e) => handleDelete(e, project._id)}
-                          title="Delete workspace"
-                          className="p-1.5 rounded-lg text-slate-300 opacity-0 group-hover:opacity-100
-                            hover:bg-rose-50 hover:text-rose-600 transition-all cursor-pointer"
+                          title="Delete project"
+                          className="p-1 rounded text-[var(--color-muted)] hover:text-[var(--color-bad)] transition-colors cursor-pointer"
+                          aria-label="Delete project"
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-4 w-4" aria-hidden="true" />
                         </button>
                       )}
-                      <div className="p-1 rounded-lg text-slate-300 group-hover:text-indigo-600 transition-colors">
-                        <ArrowUpRight className="h-4.5 w-4.5" />
-                      </div>
+                      <ArrowUpRight className="h-4 w-4 text-[var(--color-muted)] group-hover:text-[var(--color-ink)] transition-colors" aria-hidden="true" />
                     </div>
                   </div>
 
-                  <h3 className="text-base font-bold text-slate-900 group-hover:text-indigo-600 transition-colors mb-1.5 line-clamp-1">
+                  <h3 className="text-sm font-semibold text-[var(--color-ink)] mb-1 truncate">
                     {project.title}
                   </h3>
-                  <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed min-h-[2rem]">
+                  <p className="text-xs text-[var(--color-muted)] line-clamp-2 leading-relaxed min-h-[2rem]">
                     {project.description || 'No description provided.'}
                   </p>
                 </div>
 
-                {/* Card Footer */}
-                <div className="flex items-center justify-between pt-4 mt-4 border-t border-slate-100 text-xs">
-                  <div className="flex items-center gap-1.5 text-slate-500 font-medium">
-                    <Users className="h-3.5 w-3.5 text-slate-400" />
+                <div className="flex items-center justify-between pt-3 mt-4 border-t border-[var(--color-rule)] text-xs font-mono">
+                  <div className="flex items-center gap-1.5 text-[var(--color-muted)]">
+                    <Users className="h-3.5 w-3.5" aria-hidden="true" />
                     <span>
                       {memberCount} {memberCount === 1 ? 'member' : 'members'}
                     </span>
                   </div>
 
-                  {isOwner && (
-                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-100">
-                      <ShieldCheck className="h-3 w-3" />
-                      <span>Owner</span>
-                    </span>
-                  )}
+                  {isOwner && <Badge variant="medium">owner</Badge>}
                 </div>
               </div>
             );
@@ -196,41 +180,42 @@ export default function Projects() {
       <Modal
         isOpen={showCreate}
         onClose={() => setShowCreate(false)}
-        title="Initialize New Project Workspace"
+        title="Create new project workspace"
       >
-        <form onSubmit={handleCreate} className="space-y-5">
+        <form onSubmit={handleCreate} className="space-y-4">
           <Input
-            label="Project Title"
-            placeholder="e.g. NextGen Mobile Client, Cloud API Migration"
+            label="Title"
+            placeholder="e.g. Core API Service"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             autoFocus
           />
-          <div className="space-y-1.5">
-            <label className="block text-sm font-semibold text-slate-700">
+          <div className="space-y-1.5 text-left">
+            <label className="block text-xs font-medium text-[var(--color-ink-2)]">
               Description
             </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Outline high-level goals and milestones for your team..."
+              placeholder="Workspace objectives and scope..."
               rows={3}
-              className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5
-                text-sm text-slate-900 placeholder:text-slate-400
-                focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500
-                transition-colors duration-150 resize-none shadow-xs"
+              className="w-full rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-3)] px-3.5 py-2.5
+                text-sm text-[var(--color-ink)] placeholder:text-[var(--color-muted)]
+                focus-visible:border-[var(--color-focus)] focus-visible:outline-none
+                transition-colors resize-none"
             />
           </div>
-          <div className="flex justify-end gap-3 pt-3">
+          <div className="flex justify-end gap-2.5 pt-2">
             <Button
               type="button"
               variant="ghost"
               onClick={() => setShowCreate(false)}
+              size="sm"
             >
               Cancel
             </Button>
-            <Button type="submit" isLoading={isCreating}>
-              Create Workspace
+            <Button type="submit" isLoading={isCreating} size="sm">
+              Create workspace
             </Button>
           </div>
         </form>

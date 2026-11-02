@@ -1,22 +1,17 @@
-const colorMap = {
-  // Priority badges
-  low: 'bg-emerald-50 text-emerald-700 ring-emerald-600/20',
-  medium: 'bg-amber-50 text-amber-700 ring-amber-600/20',
-  high: 'bg-red-50 text-red-700 ring-red-600/20',
-  // Status badges
-  'to-do': 'bg-slate-50 text-slate-700 ring-slate-600/20',
-  inprogress: 'bg-blue-50 text-blue-700 ring-blue-600/20',
-  completed: 'bg-emerald-50 text-emerald-700 ring-emerald-600/20',
-  // Generic
-  default: 'bg-slate-50 text-slate-600 ring-slate-500/20',
-  brand: 'bg-indigo-50 text-indigo-700 ring-indigo-600/20',
-};
-
 export default function Badge({ children, variant = 'default', className = '' }) {
+  const variantStyles = {
+    low: 'bg-[var(--color-ok-soft)] text-[var(--color-ok)] border-[var(--color-ok-soft)]',
+    medium: 'bg-[var(--color-accent-soft)] text-[var(--color-accent)] border-[var(--color-accent-soft)]',
+    high: 'bg-[var(--color-bad-soft)] text-[var(--color-bad)] border-[var(--color-bad-soft)]',
+    'to-do': 'bg-[var(--color-paper-3)] text-[var(--color-muted)] border-[var(--color-rule)]',
+    inprogress: 'bg-[var(--color-cool-soft)] text-[var(--color-cool)] border-[var(--color-cool-soft)]',
+    completed: 'bg-[var(--color-ok-soft)] text-[var(--color-ok)] border-[var(--color-ok-soft)]',
+    default: 'bg-[var(--color-paper-3)] text-[var(--color-ink-2)] border-[var(--color-rule)]',
+  };
+
   return (
     <span
-      className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ring-1 ring-inset
-        ${colorMap[variant] || colorMap.default} ${className}`}
+      className={`inline-flex items-center rounded-[var(--radius-pill)] border px-2 py-0.5 text-xs font-mono font-medium leading-none ${variantStyles[variant] || variantStyles.default} ${className}`}
     >
       {children}
     </span>
