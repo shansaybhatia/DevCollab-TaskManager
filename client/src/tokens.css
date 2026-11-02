@@ -5,58 +5,58 @@
   --text-display-s: 1.5rem; --text-display: 2rem; --text-section: 1.25rem; --text-title: 1.05rem; --text-lead: 1rem;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --dur-micro: 120ms; --dur-short: 200ms; --dur-long: 380ms;
-  --color-error: oklch(68% 0.20 25); --color-success: oklch(89% 0.19 126);
+  --color-error: oklch(65% 0.22 25);
+  --color-success: oklch(72% 0.18 145);
   --container: 1600px; --gutter: 48px; --gap-columns: 28px;
   --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
 
-  /* Hallmark Vantage Ground & Surfaces */
-  --color-paper: oklch(13.5% 0.012 235);
-  --color-paper-2: oklch(17% 0.014 235);
-  --color-paper-3: oklch(21% 0.016 235);
-  --color-slot: oklch(21% 0.016 235);
+  /* Deep Slate/Obsidian Canvas */
+  --color-paper: oklch(14% 0.016 255);
+  --color-paper-2: oklch(18% 0.020 255);
+  --color-paper-3: oklch(23% 0.024 255);
+  --color-slot: oklch(23% 0.024 255);
 
-  /* Typography Colors */
-  --color-ink: oklch(96% 0.006 230);
-  --color-ink-2: oklch(84% 0.012 230);
-  --color-muted: oklch(68% 0.016 230);
+  /* High-Contrast Titanium Typography */
+  --color-ink: oklch(98% 0.005 240);
+  --color-ink-2: oklch(86% 0.012 245);
+  --color-muted: oklch(68% 0.018 245);
 
-  /* Borders & Rules */
-  --color-rule: oklch(28% 0.014 235);
-  --color-rule-2: oklch(36% 0.016 235);
-  --color-light: oklch(98% 0.008 230);
-  --color-shade: oklch(9% 0.015 235);
+  /* Subtle Hairline Borders */
+  --color-rule: oklch(28% 0.018 255);
+  --color-rule-2: oklch(35% 0.022 255);
+  --color-light: oklch(98% 0.005 240);
+  --color-shade: oklch(9% 0.015 255);
 
-  /* High-energy Chromatic Lime Vantage Signal Accent */
-  --color-accent: oklch(89% 0.19 126);
-  --color-accent-ink: oklch(16% 0.04 126);
-  --color-accent-hi: oklch(93% 0.17 126);
-  --color-accent-deep: oklch(48% 0.18 126);
-  --color-accent-soft: oklch(92% 0.04 126);
-  --color-focus: oklch(89% 0.19 126);
+  /* Refined Modern Electric Indigo (Easy on the eyes, premium SaaS) */
+  --color-accent: oklch(58% 0.24 265);
+  --color-accent-ink: oklch(98% 0.005 240);
+  --color-accent-hi: oklch(64% 0.22 265);
+  --color-accent-deep: oklch(46% 0.24 265);
+  --color-accent-soft: oklch(58% 0.24 265 / 0.16);
+  --color-focus: oklch(58% 0.24 265);
 
-  /* Secondary Engineering Telemetry Signals */
+  /* Secondary Accents */
   --point-lo: oklch(42% 0.04 245);
-  --point-mid: oklch(76% 0.12 215);
+  --point-mid: oklch(74% 0.14 220);
   --point-hi: oklch(96% 0.02 215);
-  --color-accent-2: oklch(76% 0.12 215);
-  --color-amber: oklch(80% 0.16 85);
+  --color-accent-2: oklch(74% 0.14 220);
+  --color-amber: oklch(78% 0.16 75);
 
   /* Glassmorphism System */
-  --glass: oklch(18% 0.015 235 / 0.72);
+  --glass: oklch(18% 0.018 255 / 0.72);
   --glass-blur: 20px;
-  --glass-hi: inset 0 1px 0 oklch(100% 0 0 / 0.12), inset 0 0 0 1px oklch(100% 0 0 / 0.05);
-  --shadow-card: 0 1px 0 oklch(100% 0 0 / 0.08) inset, 0 30px 60px -20px oklch(6% 0.02 235 / 0.75);
-  --shadow-accent: 0 0 25px -4px oklch(89% 0.19 126 / 0.45);
+  --glass-hi: inset 0 1px 0 oklch(100% 0 0 / 0.10), inset 0 0 0 1px oklch(100% 0 0 / 0.04);
+  --shadow-card: 0 1px 0 oklch(100% 0 0 / 0.06) inset, 0 25px 50px -15px oklch(8% 0.02 255 / 0.7);
 
   /* Typography & Geometric Styling */
   --font-display: "Geologica", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Geologica", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
   --radius-card: 14px;
   --radius-inner: 10px;
-  --radius-btn: 10px;
+  --radius-btn: 9px;
   --radius-pill: 999px;
   --rule-hair: 1px;
   --tick: 10px;
-  --tracking-display: -0.03em;
+  --tracking-display: -0.025em;
   --display-weight: 600;
 }

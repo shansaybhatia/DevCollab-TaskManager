@@ -5,7 +5,6 @@ import {
   UserCircle,
   LogOut,
   Radio,
-  Zap,
 } from 'lucide-react';
 import useAuthStore from '../../stores/authStore';
 import Avatar from '../ui/Avatar';
@@ -33,18 +32,18 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-[var(--z-sticky-nav)] flex w-64 flex-col border-r border-[var(--color-rule)] bg-[color-mix(in_oklch,var(--color-paper-2)_88%,transparent)] backdrop-blur-2xl shadow-2xl">
+    <aside className="fixed inset-y-0 left-0 z-[var(--z-sticky-nav)] flex w-64 flex-col border-r border-slate-800 bg-slate-900/90 backdrop-blur-2xl shadow-2xl">
       {/* Brand Header */}
-      <div className="flex items-center gap-3 px-6 py-5 border-b border-[var(--color-rule)]">
+      <div className="flex items-center gap-3 px-6 py-5 border-b border-slate-800">
         <Logo size={36} />
         <div>
-          <span className="text-base font-bold text-[var(--color-ink)] tracking-tight">
+          <span className="text-base font-bold text-white tracking-tight">
             DevCollab
           </span>
           <div className="flex items-center gap-1.5 mt-0.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
-            <span className="text-[11px] font-mono text-[var(--color-accent)] font-medium">
-              v2.4 • Vantage
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-[11px] text-slate-400 font-medium">
+              Real-Time Agile
             </span>
           </div>
         </div>
@@ -52,7 +51,7 @@ export default function Sidebar() {
 
       {/* Navigation */}
       <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
-        <div className="px-3 pb-2 text-xs text-[var(--color-muted)] font-medium">
+        <div className="px-3 pb-2 text-xs text-slate-400 font-medium">
           Workspaces
         </div>
         {navItems.map(({ to, label, icon: Icon }) => (
@@ -62,8 +61,8 @@ export default function Sidebar() {
             className={({ isActive }) =>
               `flex items-center gap-3 px-3.5 py-2.5 rounded-[var(--radius-btn)] text-sm font-semibold transition-colors duration-200 ${
                 isActive
-                  ? 'bg-[color-mix(in_oklch,var(--color-accent)_14%,transparent)] text-[var(--color-accent)] border border-[color-mix(in_oklch,var(--color-accent)_35%,transparent)] shadow-[0_0_15px_-3px_color-mix(in_oklch,var(--color-accent)_30%,transparent)]'
-                  : 'text-[var(--color-ink-2)] hover:bg-[var(--color-paper-3)] hover:text-white hover:translate-x-1'
+                  ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 shadow-sm'
+                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-white hover:translate-x-1'
               }`
             }
           >
@@ -74,30 +73,30 @@ export default function Sidebar() {
       </nav>
 
       {/* Live Sync Telemetry Status */}
-      <div className="px-4 py-3 mx-4 mb-4 rounded-[var(--radius-card)] glass-panel border-[var(--color-rule-2)] text-xs">
-        <div className="flex items-center justify-between text-[var(--color-accent)] font-semibold">
+      <div className="px-4 py-3 mx-4 mb-4 rounded-[var(--radius-card)] bg-slate-800/40 border border-slate-700/60 text-xs">
+        <div className="flex items-center justify-between text-indigo-400 font-semibold">
           <div className="flex items-center gap-2">
-            <Radio className="h-3.5 w-3.5 animate-pulse" aria-hidden="true" />
+            <Radio className="h-3.5 w-3.5 animate-pulse text-emerald-400" aria-hidden="true" />
             <span>WebSocket Duplex</span>
           </div>
-          <span className="text-[10px] px-1.5 py-0.5 rounded bg-[color-mix(in_oklch,var(--color-accent)_20%,transparent)] font-semibold">
+          <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 font-semibold border border-emerald-500/25">
             Live
           </span>
         </div>
-        <p className="text-[11px] text-[var(--color-muted)] mt-1.5 leading-snug">
-          Instant sync across board columns and active sessions
+        <p className="text-[11px] text-slate-400 mt-1.5 leading-snug">
+          Instant multi-user card synchronization
         </p>
       </div>
 
       {/* User Session Footer */}
-      <div className="border-t border-[var(--color-rule)] p-4 bg-[var(--color-paper-2)]/70 backdrop-blur-md">
+      <div className="border-t border-slate-800 p-4 bg-slate-900/60">
         <div className="flex items-center gap-3 mb-3 px-1">
           <Avatar src={user?.avatar} name={user?.name || ''} size="md" />
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-bold text-[var(--color-ink)] truncate">
+            <p className="text-sm font-bold text-white truncate">
               {user?.name || 'Engineer'}
             </p>
-            <p className="text-xs text-[var(--color-muted)] truncate font-mono">
+            <p className="text-xs text-slate-400 truncate">
               {user?.email || 'user@devcollab.io'}
             </p>
           </div>
@@ -105,7 +104,7 @@ export default function Sidebar() {
 
         <button
           onClick={handleLogout}
-          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-[var(--radius-btn)] border border-[var(--color-rule-2)] text-xs font-semibold text-[var(--color-muted)] hover:text-white hover:border-[var(--color-accent)] hover:bg-[var(--color-paper-3)] transition-colors duration-200 cursor-pointer"
+          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-[var(--radius-btn)] border border-slate-700/80 text-xs font-semibold text-slate-400 hover:text-white hover:border-slate-600 hover:bg-slate-800 transition-colors duration-200 cursor-pointer"
         >
           <LogOut className="h-3.5 w-3.5" aria-hidden="true" />
           <span>Sign out</span>

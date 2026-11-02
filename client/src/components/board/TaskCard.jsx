@@ -89,15 +89,15 @@ export default function TaskCard({ task, onEdit, onDelete }) {
       )}
 
       {/* Metadata */}
-      <div className="flex items-center justify-between pt-3 border-t border-[var(--color-rule)] text-xs font-mono">
+      <div className="flex items-center justify-between pt-3 border-t border-slate-800 text-xs">
         {task.duedate ? (
           <div
             className={`inline-flex items-center gap-1.5 ${
-              isOverdue ? 'text-[var(--color-error)]' : 'text-[var(--color-muted)]'
+              isOverdue ? 'text-rose-400' : 'text-slate-400'
             }`}
           >
             <Calendar className="h-3.5 w-3.5" aria-hidden="true" />
-            <span>{formatDate(task.duedate)}</span>
+            <span className="font-mono">{formatDate(task.duedate)}</span>
           </div>
         ) : (
           <span />
@@ -111,7 +111,7 @@ export default function TaskCard({ task, onEdit, onDelete }) {
             className="!h-6 !w-6 !text-[10px]"
           />
         ) : (
-          <span className="text-[11px] text-[var(--color-muted)]">unassigned</span>
+          <span className="text-[11px] text-slate-500">unassigned</span>
         )}
       </div>
     </div>

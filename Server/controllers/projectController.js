@@ -136,3 +136,38 @@ exports.inviteMember = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+
+// DELETE /api/projects/:id/members/:userId - Remove member from project (Owner only)
+exports.removeMember = async (req, res) => {
+  try {
+    const { id: projectId, userId } = req.params;
+
+    const project = await Project.findOne({
+      _id: projectId,
+      owner: req.user._id,
+    });
+
+    if (!project) {
+      return res.status(404).json({
+        message: 'Project not found or you are not authorized as owner',
+      });
+    }
+
+    if (userId.toString() === project.owner.toString()) {
+      return res.status(400).json({ message: 'Project owner cannot be removed' });
+    }
+
+    // Filter out the member
+    project.members = project.members.filter(
+      (m) => m.user && m.user.toString() !== userId.toString()
+    );
+
+    await project.save();
+    await project.populate('owner', 'name email avatar');
+    await project.populate('members.user', 'name email avatar');
+
+    res.status(200).json({ message: 'Member removed successfully', project });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};

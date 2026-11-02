@@ -6,6 +6,8 @@ import {
   UserPlus,
   Users,
   Radio,
+  UserMinus,
+  Shield,
 } from 'lucide-react';
 import useTaskStore from '../stores/taskStore';
 import useProjectStore from '../stores/projectStore';
@@ -17,6 +19,7 @@ import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import Avatar from '../components/ui/Avatar';
 import Spinner from '../components/ui/Spinner';
+import Badge from '../components/ui/Badge';
 import { connectSocket, joinProject as socketJoinProject } from '../lib/socket';
 import toast from 'react-hot-toast';
 
@@ -37,7 +40,7 @@ export default function ProjectBoard() {
     handleSocketTaskDelete,
     clearTasks,
   } = useTaskStore();
-  const { projects, fetchProjects, inviteMember } = useProjectStore();
+  const { projects, fetchProjects, inviteMember, removeMember } = useProjectStore();
 
   const [showTaskForm, setShowTaskForm] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
@@ -75,29 +78,59 @@ export default function ProjectBoard() {
     };
   }, [projectId]);
 
+  // Compute accurate unique member roster (never duplicates)
   const getMembersList = () => {
     if (!project) return [];
-    const members = [];
+    const membersMap = new Map();
+
+    const ownerId = project.owner?._id
+      ? String(project.owner._id)
+      : String(project.owner || '');
 
     if (project.owner) {
       const ownerObj =
         typeof project.owner === 'object'
           ? project.owner
-          : { _id: project.owner, name: 'Owner' };
-      members.push(ownerObj);
+          : { _id: ownerId, name: 'Owner' };
+
+      membersMap.set(ownerId, {
+        _id: ownerId,
+        name: ownerObj.name || 'Owner',
+        email: ownerObj.email || '',
+        avatar: ownerObj.avatar || '',
+        role: 'owner',
+        isOwner: true,
+      });
     }
 
-    if (project.members) {
+    if (Array.isArray(project.members)) {
       project.members.forEach((m) => {
-        const memberUser = m.User || m.user;
-        if (memberUser && memberUser._id !== project.owner?._id) {
-          members.push(memberUser);
+        const u = m.user || m.User;
+        if (!u) return;
+        const uId = String(u._id || u);
+        if (!membersMap.has(uId)) {
+          membersMap.set(uId, {
+            _id: uId,
+            name: u.name || 'Member',
+            email: u.email || '',
+            avatar: u.avatar || '',
+            role: uId === ownerId ? 'owner' : m.role || 'member',
+            isOwner: uId === ownerId,
+          });
         }
       });
     }
 
-    return members;
+    return Array.from(membersMap.values());
   };
+
+  const currentUserId = String(user?._id || user?.id || '');
+  const projectOwnerId = project?.owner?._id
+    ? String(project.owner._id)
+    : String(project?.owner || '');
+  const isCurrentUserOwner = Boolean(
+    currentUserId && projectOwnerId && currentUserId === projectOwnerId
+  );
 
   const handleCreateTask = async (taskData) => {
     try {
@@ -136,13 +169,27 @@ export default function ProjectBoard() {
     setIsInviting(true);
     try {
       await inviteMember(projectId, inviteEmail.trim());
-      toast.success('Invitation sent');
+      toast.success('Member added to workspace');
       setInviteEmail('');
-      setShowInvite(false);
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to invite');
+      toast.error(err.response?.data?.message || 'Failed to invite member');
     } finally {
       setIsInviting(false);
+    }
+  };
+
+  const handleRemoveMember = async (memberUserId, memberName) => {
+    if (
+      !confirm(
+        `Are you sure you want to remove ${memberName || 'this member'} from the workspace?`
+      )
+    )
+      return;
+    try {
+      await removeMember(projectId, memberUserId);
+      toast.success(`${memberName || 'Member'} removed from workspace`);
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to remove member');
     }
   };
 
@@ -155,21 +202,25 @@ export default function ProjectBoard() {
       setDraggedTask(null);
       return;
     }
-    const currentTask = draggedTask;
-    setDraggedTask(null);
-
+    const previousStatus = draggedTask.status;
     try {
-      await updateTask(currentTask._id, { status: newStatus });
+      await updateTask(draggedTask._id, { status: newStatus });
       toast.success(`Moved to ${newStatus}`);
-    } catch (err) {
+    } catch {
       toast.error('Failed to move task');
+      await updateTask(draggedTask._id, { status: previousStatus });
+    } finally {
+      setDraggedTask(null);
     }
   };
 
-  if (isLoading) {
+  if (isLoading && tasks.length === 0) {
     return (
-      <div className="flex items-center justify-center h-96">
+      <div className="flex flex-col items-center justify-center h-96 gap-4">
         <Spinner size="lg" />
+        <span className="text-xs text-slate-400">
+          Loading sprint board telemetry…
+        </span>
       </div>
     );
   }
@@ -179,11 +230,11 @@ export default function ProjectBoard() {
   return (
     <div className="space-y-6">
       {/* Board Header Bar */}
-      <div className="glass-panel p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
+      <div className="glass-panel p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl border-slate-800">
         <div className="flex items-center gap-4">
           <button
             onClick={() => navigate('/projects')}
-            className="p-2 rounded-[var(--radius-btn)] border border-[var(--color-rule-2)] bg-[var(--color-paper-2)] text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:border-[var(--color-accent)] transition-colors cursor-pointer"
+            className="p-2 rounded-[var(--radius-btn)] border border-slate-700 bg-slate-800/80 text-slate-300 hover:text-white hover:border-slate-500 transition-colors cursor-pointer"
             aria-label="Back to projects"
           >
             <ArrowLeft className="h-4.5 w-4.5" aria-hidden="true" />
@@ -191,16 +242,16 @@ export default function ProjectBoard() {
 
           <div>
             <div className="flex items-center gap-2.5">
-              <h1 className="text-xl font-bold text-[var(--color-ink)] tracking-tight">
+              <h1 className="text-xl font-bold text-white tracking-tight">
                 {project?.title || 'Project sprint board'}
               </h1>
-              <span className="inline-flex items-center gap-1.5 text-xs text-[var(--color-accent)] bg-[color-mix(in_oklch,var(--color-accent)_12%,transparent)] px-2.5 py-0.5 rounded-full border border-[color-mix(in_oklch,var(--color-accent)_30%,transparent)] font-semibold">
-                <Radio className="h-3 w-3 animate-pulse" aria-hidden="true" />
+              <span className="inline-flex items-center gap-1.5 text-xs text-slate-300 bg-slate-800 px-2.5 py-0.5 rounded-full border border-slate-700 font-medium">
+                <Radio className="h-3 w-3 text-emerald-400 animate-pulse" aria-hidden="true" />
                 <span>Live sync</span>
               </span>
             </div>
             {project?.description && (
-              <p className="text-xs text-[var(--color-muted)] mt-1 line-clamp-1">
+              <p className="text-xs text-slate-400 mt-1 line-clamp-1">
                 {project.description}
               </p>
             )}
@@ -210,24 +261,24 @@ export default function ProjectBoard() {
         {/* Actions & Roster */}
         <div className="flex items-center gap-3">
           <div className="flex -space-x-2 mr-2">
-            {membersList.slice(0, 4).map((m, i) => (
+            {membersList.slice(0, 4).map((m) => (
               <Avatar
-                key={m._id || i}
+                key={m._id}
                 src={m.avatar}
                 name={m.name || 'Member'}
                 size="sm"
-                className="ring-2 ring-[var(--color-paper-2)]"
+                className="ring-2 ring-slate-900"
               />
             ))}
           </div>
 
           <Button
-            variant="outline"
+            variant="secondary"
             size="sm"
-            icon={UserPlus}
+            icon={isCurrentUserOwner ? UserPlus : Users}
             onClick={() => setShowInvite(true)}
           >
-            Invite
+            {isCurrentUserOwner ? 'Manage Team' : `Members (${membersList.length})`}
           </Button>
 
           <Button
@@ -274,63 +325,101 @@ export default function ProjectBoard() {
         editingTask={editingTask}
       />
 
-      {/* Invite Modal */}
+      {/* Team & Members Management Modal */}
       <Modal
         isOpen={showInvite}
         onClose={() => setShowInvite(false)}
-        title="Invite team member"
-        size="sm"
+        title={isCurrentUserOwner ? 'Manage Workspace Team' : 'Workspace Members'}
+        size="md"
       >
-        <form onSubmit={handleInvite} className="space-y-4">
-          <Input
-            label="Email address"
-            type="email"
-            placeholder="colleague@devcollab.io"
-            value={inviteEmail}
-            onChange={(e) => setInviteEmail(e.target.value)}
-            autoFocus
-          />
-          <div className="flex justify-end gap-3 pt-3">
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => setShowInvite(false)}
-              size="sm"
-            >
-              Cancel
-            </Button>
-            <Button type="submit" isLoading={isInviting} size="sm">
-              Send invitation
-            </Button>
-          </div>
-        </form>
+        <div className="space-y-6">
+          {/* Owner-only Invite Form */}
+          {isCurrentUserOwner ? (
+            <form onSubmit={handleInvite} className="space-y-3">
+              <Input
+                label="Invite team member by email"
+                type="email"
+                placeholder="colleague@devcollab.io"
+                value={inviteEmail}
+                onChange={(e) => setInviteEmail(e.target.value)}
+                autoFocus
+              />
+              <div className="flex justify-end gap-3 pt-1">
+                <Button type="submit" isLoading={isInviting} size="sm">
+                  Send invitation
+                </Button>
+              </div>
+            </form>
+          ) : (
+            <div className="p-3 rounded-lg bg-slate-800/50 border border-slate-700/60 text-xs text-slate-400 flex items-center gap-2">
+              <Shield className="h-4 w-4 text-indigo-400 shrink-0" />
+              <span>You are viewing this team roster as a member. Only the owner can invite or remove members.</span>
+            </div>
+          )}
 
-        {membersList.length > 0 && (
-          <div className="mt-6 pt-4 border-t border-[var(--color-rule)]">
-            <div className="flex items-center gap-2 mb-3 text-xs font-mono text-[var(--color-muted)]">
-              <Users className="h-4 w-4" aria-hidden="true" />
-              <span>Workspace members ({membersList.length})</span>
+          {/* Members Roster List */}
+          <div className="pt-2 border-t border-slate-800">
+            <div className="flex items-center justify-between mb-3 text-xs text-slate-400">
+              <span className="flex items-center gap-1.5 font-medium">
+                <Users className="h-4 w-4 text-indigo-400" aria-hidden="true" />
+                Workspace members ({membersList.length})
+              </span>
+              {isCurrentUserOwner && (
+                <span className="text-[11px] text-slate-500">
+                  Owner permissions active
+                </span>
+              )}
             </div>
-            <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
-              {membersList.map((m, i) => (
-                <div
-                  key={m._id || i}
-                  className="flex items-center gap-3 p-2.5 rounded-[var(--radius-btn)] hover:bg-[var(--color-paper-3)] transition-colors border border-transparent hover:border-[var(--color-rule)]"
-                >
-                  <Avatar src={m.avatar} name={m.name || ''} size="sm" />
-                  <div className="min-w-0 flex-1 text-left">
-                    <p className="text-xs font-semibold text-[var(--color-ink)] truncate">
-                      {m.name || 'Member'}
-                    </p>
-                    <p className="text-[11px] font-mono text-[var(--color-muted)] truncate">
-                      {m.email || ''}
-                    </p>
+
+            <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+              {membersList.map((m) => {
+                const isThisMemberOwner = m.isOwner || m._id === projectOwnerId;
+
+                return (
+                  <div
+                    key={m._id}
+                    className="flex items-center justify-between p-2.5 rounded-lg bg-slate-900/60 border border-slate-800 hover:border-slate-700 transition-colors"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <Avatar src={m.avatar} name={m.name || ''} size="sm" />
+                      <div className="min-w-0 text-left">
+                        <div className="flex items-center gap-2">
+                          <p className="text-xs font-semibold text-white truncate">
+                            {m.name || 'Member'}
+                          </p>
+                          {m._id === currentUserId && (
+                            <span className="text-[10px] text-slate-400">(You)</span>
+                          )}
+                        </div>
+                        <p className="text-[11px] text-slate-400 truncate">
+                          {m.email || ''}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <Badge variant={isThisMemberOwner ? 'owner' : 'member'}>
+                        {isThisMemberOwner ? 'Owner' : 'Member'}
+                      </Badge>
+
+                      {/* Remove Button (Owner ONLY, and cannot remove themselves) */}
+                      {isCurrentUserOwner && !isThisMemberOwner && (
+                        <button
+                          onClick={() => handleRemoveMember(m._id, m.name)}
+                          className="p-1.5 rounded-md text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                          title={`Remove ${m.name || 'member'} from workspace`}
+                          aria-label={`Remove ${m.name || 'member'}`}
+                        >
+                          <UserMinus className="h-4 w-4" />
+                        </button>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
-        )}
+        </div>
       </Modal>
     </div>
   );

@@ -6,14 +6,17 @@ const statusConfig = {
   'to-do': {
     label: 'To do',
     badgeVariant: 'to-do',
+    dotColor: 'bg-slate-500',
   },
   inprogress: {
     label: 'In progress',
     badgeVariant: 'inprogress',
+    dotColor: 'bg-indigo-400',
   },
   completed: {
     label: 'Completed',
     badgeVariant: 'completed',
+    dotColor: 'bg-emerald-400',
   },
 };
 
@@ -46,14 +49,12 @@ export default function KanbanColumn({
       }}
     >
       {/* Column Header */}
-      <div className="flex items-center justify-between mb-3 px-1 text-sm font-semibold text-[var(--color-ink)]">
+      <div className="flex items-center justify-between mb-3 px-1 text-sm font-semibold text-white">
         <div className="flex items-center gap-2">
-          {status === 'inprogress' && (
-            <span className="h-2 w-2 rounded-full bg-[var(--color-accent)] animate-pulse" />
-          )}
+          <span className={`h-2 w-2 rounded-full ${config.dotColor} ${status === 'inprogress' ? 'animate-pulse' : ''}`} />
           <span>{config.label}</span>
         </div>
-        <span className="text-xs text-[var(--color-muted)] bg-[var(--color-paper-2)] border border-[var(--color-rule)] px-2.5 py-0.5 rounded-[var(--radius-pill)] font-mono">
+        <span className="text-xs text-slate-400 bg-slate-800 border border-slate-700 px-2.5 py-0.5 rounded-full font-medium">
           {columnTasks.length}
         </span>
       </div>
@@ -62,8 +63,8 @@ export default function KanbanColumn({
       <div
         className={`flex-1 p-3 rounded-[var(--radius-card)] border transition-colors duration-200 min-h-[480px] space-y-3.5 ${
           isDragOver
-            ? 'glass-panel border-[var(--color-accent)] border-dashed shadow-2xl scale-[1.01]'
-            : 'bg-[color-mix(in_oklch,var(--color-paper-2)_40%,transparent)] border-[var(--color-rule)]'
+            ? 'glass-panel border-indigo-500 border-dashed shadow-2xl scale-[1.01]'
+            : 'bg-slate-900/40 border-slate-800'
         }`}
       >
         {columnTasks.map((task) => (
@@ -82,10 +83,10 @@ export default function KanbanColumn({
         ))}
 
         {columnTasks.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-48 rounded-[var(--radius-card)] border border-dashed border-[var(--color-rule)] text-center p-4">
-            <Layers className="h-6 w-6 text-[var(--color-muted)] mb-2 opacity-50" aria-hidden="true" />
-            <p className="text-xs text-[var(--color-muted)]">No tasks in this lane</p>
-            <p className="text-[11px] text-[var(--color-muted)] mt-0.5">Drag tasks here</p>
+          <div className="flex flex-col items-center justify-center h-48 rounded-[var(--radius-card)] border border-dashed border-slate-800 text-center p-4">
+            <Layers className="h-6 w-6 text-slate-600 mb-2" aria-hidden="true" />
+            <p className="text-xs text-slate-400">No tasks in this lane</p>
+            <p className="text-[11px] text-slate-500 mt-0.5">Drag tasks here</p>
           </div>
         )}
       </div>

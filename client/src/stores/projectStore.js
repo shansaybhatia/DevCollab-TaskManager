@@ -42,7 +42,21 @@ const useProjectStore = create((set, get) => ({
   // Invite member
   inviteMember: async (projectId, email) => {
     const { data } = await api.post(`/projects/${projectId}/invite`, { email });
-    // Update project in list
+    set((state) => ({
+      projects: state.projects.map((p) =>
+        p._id === projectId ? data.project : p
+      ),
+      currentProject:
+        state.currentProject?._id === projectId
+          ? data.project
+          : state.currentProject,
+    }));
+    return data;
+  },
+
+  // Remove member (Owner only)
+  removeMember: async (projectId, userId) => {
+    const { data } = await api.delete(`/projects/${projectId}/members/${userId}`);
     set((state) => ({
       projects: state.projects.map((p) =>
         p._id === projectId ? data.project : p
