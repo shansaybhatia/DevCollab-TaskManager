@@ -3,10 +3,10 @@ import Sidebar from './Sidebar';
 
 export default function AppLayout() {
   return (
-    <div className="min-h-screen bg-[var(--color-paper)] text-[var(--color-ink)]">
+    <div className="min-h-screen bg-[var(--color-paper)] text-[var(--color-ink)] relative">
       <Sidebar />
-      <main className="ml-60 min-h-screen">
-        <div className="max-w-[var(--container)] mx-auto p-8">
+      <main className="ml-64 min-h-screen">
+        <div className="p-8 lg:p-12 max-w-7xl mx-auto">
           <Outlet />
         </div>
       </main>

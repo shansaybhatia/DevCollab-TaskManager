@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Plus, Search, FolderKanban, Trash2, Users, ArrowUpRight } from 'lucide-react';
+import { Plus, Search, FolderKanban, Trash2, Users, ArrowUpRight, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import useProjectStore from '../stores/projectStore';
 import useAuthStore from '../stores/authStore';
 import Button from '../components/ui/Button';
 import Modal from '../components/ui/Modal';
 import Input from '../components/ui/Input';
-import EmptyState from '../components/ui/EmptyState';
 import Spinner from '../components/ui/Spinner';
 import Badge from '../components/ui/Badge';
 import toast from 'react-hot-toast';
@@ -74,25 +73,25 @@ export default function Projects() {
   }
 
   return (
-    <div className="space-y-6 max-w-5xl">
-      {/* Header */}
+    <div className="space-y-8">
+      {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-[var(--color-ink)] tracking-tight">
-            Projects
+          <h1 className="text-3xl font-bold text-[var(--color-ink)] tracking-tight">
+            Projects & Workspaces
           </h1>
-          <p className="text-xs text-[var(--color-muted)] mt-1 font-mono">
-            Workspaces and collaborative task boards
+          <p className="text-sm text-[var(--color-muted)] mt-1.5 leading-relaxed">
+            Manage collaborative team workspaces and sprint boards.
           </p>
         </div>
-        <Button icon={Plus} onClick={() => setShowCreate(true)} size="sm">
-          New project
+        <Button icon={Plus} onClick={() => setShowCreate(true)} size="md">
+          Create workspace
         </Button>
       </div>
 
-      {/* Search */}
+      {/* Filter and Search Bar */}
       {projects.length > 0 && (
-        <div className="max-w-xs">
+        <div className="max-w-md">
           <Input
             placeholder="Search projects..."
             icon={Search}
@@ -102,24 +101,34 @@ export default function Projects() {
         </div>
       )}
 
-      {/* Grid */}
+      {/* Empty State or Grid */}
       {filtered.length === 0 && projects.length === 0 ? (
-        <EmptyState
-          icon={FolderKanban}
-          title="No projects initialized"
-          description="Create a project workspace to start delegating tasks and managing sprints."
-          action={
-            <Button icon={Plus} onClick={() => setShowCreate(true)} size="sm">
-              Create project
+        <div className="glass-panel p-10 sm:p-14 text-center space-y-6 max-w-2xl mx-auto shadow-2xl">
+          <div className="inline-flex p-4 rounded-[var(--radius-card)] bg-[var(--color-paper-3)] border border-[var(--color-rule)] text-[var(--color-accent)]">
+            <FolderKanban className="h-8 w-8" aria-hidden="true" />
+          </div>
+
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold text-[var(--color-ink)]">
+              No project workspaces initialized yet
+            </h2>
+            <p className="text-sm text-[var(--color-muted)] max-w-md mx-auto leading-relaxed">
+              Initialize your first sprint board to begin organizing tasks, inviting team members, and collaborating in real time.
+            </p>
+          </div>
+
+          <div className="pt-2">
+            <Button icon={Plus} onClick={() => setShowCreate(true)} size="lg">
+              Create your first project
             </Button>
-          }
-        />
+          </div>
+        </div>
       ) : filtered.length === 0 ? (
-        <div className="console-panel p-8 text-center text-xs text-[var(--color-muted)]">
+        <div className="glass-panel p-12 text-center text-sm text-[var(--color-muted)]">
           No projects match &quot;{search}&quot;
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((project) => {
             const isOwner =
               project.owner === user?.id ||
@@ -132,35 +141,39 @@ export default function Projects() {
               <div
                 key={project._id}
                 onClick={() => navigate(`/projects/${project._id}`)}
-                className="console-panel-interactive p-5 flex flex-col justify-between cursor-pointer group"
+                className="glass-card-interactive p-6 flex flex-col justify-between cursor-pointer group"
               >
                 <div>
-                  <div className="flex items-start justify-between gap-2 mb-3">
-                    <FolderKanban className="h-5 w-5 text-[var(--color-accent)]" aria-hidden="true" />
-                    <div className="flex items-center gap-1">
+                  <div className="flex items-start justify-between gap-2 mb-4">
+                    <div className="p-3 rounded-[var(--radius-card)] bg-[var(--color-paper-3)] border border-[var(--color-rule)] text-[var(--color-accent)]">
+                      <FolderKanban className="h-5 w-5" aria-hidden="true" />
+                    </div>
+                    <div className="flex items-center gap-1.5">
                       {isOwner && (
                         <button
                           onClick={(e) => handleDelete(e, project._id)}
                           title="Delete project"
-                          className="p-1 rounded text-[var(--color-muted)] hover:text-[var(--color-bad)] transition-colors cursor-pointer"
+                          className="p-1.5 rounded-[var(--radius-pill)] text-[var(--color-muted)] hover:text-[var(--color-error)] hover:bg-[var(--color-paper-3)] transition-colors cursor-pointer"
                           aria-label="Delete project"
                         >
                           <Trash2 className="h-4 w-4" aria-hidden="true" />
                         </button>
                       )}
-                      <ArrowUpRight className="h-4 w-4 text-[var(--color-muted)] group-hover:text-[var(--color-ink)] transition-colors" aria-hidden="true" />
+                      <div className="p-1.5 text-[var(--color-muted)] group-hover:text-[var(--color-accent)] transition-colors">
+                        <ArrowUpRight className="h-4.5 w-4.5" aria-hidden="true" />
+                      </div>
                     </div>
                   </div>
 
-                  <h3 className="text-sm font-semibold text-[var(--color-ink)] mb-1 truncate">
+                  <h3 className="text-base font-bold text-[var(--color-ink)] mb-1.5 truncate group-hover:text-[var(--color-accent)] transition-colors">
                     {project.title}
                   </h3>
-                  <p className="text-xs text-[var(--color-muted)] line-clamp-2 leading-relaxed min-h-[2rem]">
+                  <p className="text-xs text-[var(--color-muted)] line-clamp-2 leading-relaxed min-h-[2.25rem]">
                     {project.description || 'No description provided.'}
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between pt-3 mt-4 border-t border-[var(--color-rule)] text-xs font-mono">
+                <div className="flex items-center justify-between pt-4 mt-4 border-t border-[var(--color-rule)] text-xs font-mono">
                   <div className="flex items-center gap-1.5 text-[var(--color-muted)]">
                     <Users className="h-3.5 w-3.5" aria-hidden="true" />
                     <span>
@@ -168,7 +181,9 @@ export default function Projects() {
                     </span>
                   </div>
 
-                  {isOwner && <Badge variant="medium">owner</Badge>}
+                  {isOwner && (
+                    <Badge variant="medium">owner</Badge>
+                  )}
                 </div>
               </div>
             );
@@ -184,14 +199,14 @@ export default function Projects() {
       >
         <form onSubmit={handleCreate} className="space-y-4">
           <Input
-            label="Title"
-            placeholder="e.g. Core API Service"
+            label="Project title"
+            placeholder="e.g. Core API Service, Mobile Client"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             autoFocus
           />
-          <div className="space-y-1.5 text-left">
-            <label className="block text-xs font-medium text-[var(--color-ink-2)]">
+          <div className="space-y-2 text-left">
+            <label className="block text-xs font-medium text-[var(--color-ink-2)] tracking-wide">
               Description
             </label>
             <textarea
@@ -199,13 +214,13 @@ export default function Projects() {
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Workspace objectives and scope..."
               rows={3}
-              className="w-full rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-3)] px-3.5 py-2.5
+              className="w-full rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-2)] px-4 py-3
                 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-muted)]
-                focus-visible:border-[var(--color-focus)] focus-visible:outline-none
-                transition-colors resize-none"
+                focus:border-[var(--color-focus)] focus:bg-[var(--color-paper-3)] focus:outline-none
+                transition-colors duration-200 resize-none"
             />
           </div>
-          <div className="flex justify-end gap-2.5 pt-2">
+          <div className="flex justify-end gap-3 pt-3">
             <Button
               type="button"
               variant="ghost"

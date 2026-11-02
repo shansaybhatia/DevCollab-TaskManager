@@ -38,19 +38,19 @@ export default function Register() {
   };
 
   return (
-    <div className="console-panel p-8 space-y-6">
+    <div className="glass-panel p-8 sm:p-10 space-y-6 shadow-2xl">
       <div>
-        <h2 className="text-xl font-semibold text-[var(--color-ink)] tracking-tight">
+        <h2 className="text-2xl font-bold text-[var(--color-ink)] tracking-tight">
           Create account
         </h2>
-        <p className="text-xs text-[var(--color-muted)] mt-1">
+        <p className="text-sm text-[var(--color-muted)] mt-1.5 leading-relaxed">
           Set up an engineering profile to collaborate on team boards.
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input
-          label="Name"
+          label="Full name"
           type="text"
           placeholder="Engineer name"
           icon={User}
@@ -70,29 +70,29 @@ export default function Register() {
           required
         />
 
-        <div className="space-y-1.5 text-left">
-          <label className="block text-xs font-medium text-[var(--color-ink-2)]">
+        <div className="space-y-2 text-left">
+          <label className="block text-xs font-medium text-[var(--color-ink-2)] tracking-wide">
             Password
           </label>
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[var(--color-muted)]">
-              <Lock className="h-4 w-4" aria-hidden="true" />
+            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[var(--color-muted)]">
+              <Lock className="h-4.5 w-4.5" aria-hidden="true" />
             </div>
             <input
               type={showPassword ? 'text' : 'password'}
               placeholder="Minimum 6 characters"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-3)] pl-9 pr-9 py-2.5
+              className="w-full rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-2)] pl-10 pr-10 py-3
                 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-muted)]
-                focus-visible:border-[var(--color-focus)] focus-visible:outline-none
-                transition-colors"
+                focus:border-[var(--color-focus)] focus:bg-[var(--color-paper-3)] focus:outline-none
+                transition-colors duration-200"
               required
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-0 right-0 pr-3 flex items-center text-[var(--color-muted)] hover:text-[var(--color-ink)] cursor-pointer"
+              className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-[var(--color-muted)] hover:text-[var(--color-ink)] cursor-pointer"
               aria-label="Toggle password visibility"
             >
               {showPassword ? (
@@ -108,7 +108,7 @@ export default function Register() {
           <Button
             type="submit"
             isLoading={isLoading}
-            className="w-full py-2.5 text-sm"
+            className="w-full py-3.5 text-sm font-semibold shadow-lg"
           >
             <span>Create account</span>
             <ArrowRight className="h-4 w-4 ml-1" aria-hidden="true" />
@@ -116,12 +116,12 @@ export default function Register() {
         </div>
       </form>
 
-      <div className="pt-3 border-t border-[var(--color-rule)] text-center">
+      <div className="pt-4 border-t border-[var(--color-rule)] text-center">
         <p className="text-xs text-[var(--color-muted)]">
           Already registered?{' '}
           <Link
             to="/login"
-            className="font-medium text-[var(--color-accent)] hover:underline inline-flex items-center gap-1"
+            className="font-semibold text-[var(--color-accent)] hover:underline inline-flex items-center gap-1 ml-1"
           >
             <span>Sign in</span>
           </Link>

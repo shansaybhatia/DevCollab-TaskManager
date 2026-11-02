@@ -177,30 +177,30 @@ export default function ProjectBoard() {
   const membersList = getMembersList();
 
   return (
-    <div className="space-y-6 max-w-6xl">
+    <div className="space-y-6">
       {/* Board Header Bar */}
-      <div className="console-panel p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
+      <div className="glass-panel p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
+        <div className="flex items-center gap-4">
           <button
             onClick={() => navigate('/projects')}
-            className="p-1.5 rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-3)] text-[var(--color-muted)] hover:text-[var(--color-ink)] transition-colors cursor-pointer"
+            className="p-2 rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-2)] text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:border-[var(--color-accent)] transition-colors cursor-pointer"
             aria-label="Back to projects"
           >
-            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            <ArrowLeft className="h-4.5 w-4.5" aria-hidden="true" />
           </button>
 
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-lg font-semibold text-[var(--color-ink)] tracking-tight">
-                {project?.title || 'Project board'}
+            <div className="flex items-center gap-2.5">
+              <h1 className="text-xl font-bold text-[var(--color-ink)] tracking-tight">
+                {project?.title || 'Project sprint board'}
               </h1>
-              <span className="inline-flex items-center gap-1 text-[11px] font-mono text-[var(--color-cool)] bg-[var(--color-cool-soft)] px-2 py-0.5 rounded-[var(--radius-pill)]">
-                <Radio className="h-2.5 w-2.5 animate-pulse" aria-hidden="true" />
-                <span>live</span>
+              <span className="inline-flex items-center gap-1.5 text-xs font-mono text-[var(--color-accent)] bg-[color-mix(in_oklch,var(--color-accent)_12%,transparent)] px-2.5 py-0.5 rounded-[var(--radius-pill)]">
+                <Radio className="h-3 w-3 animate-pulse" aria-hidden="true" />
+                <span>Live sync</span>
               </span>
             </div>
             {project?.description && (
-              <p className="text-xs text-[var(--color-muted)] mt-0.5 line-clamp-1">
+              <p className="text-xs text-[var(--color-muted)] mt-1 line-clamp-1">
                 {project.description}
               </p>
             )}
@@ -209,13 +209,14 @@ export default function ProjectBoard() {
 
         {/* Actions & Roster */}
         <div className="flex items-center gap-3">
-          <div className="flex -space-x-1.5 mr-1">
+          <div className="flex -space-x-2 mr-2">
             {membersList.slice(0, 4).map((m, i) => (
               <Avatar
                 key={m._id || i}
                 src={m.avatar}
                 name={m.name || 'Member'}
                 size="sm"
+                className="ring-2 ring-[var(--color-paper-2)]"
               />
             ))}
           </div>
@@ -243,7 +244,7 @@ export default function ProjectBoard() {
       </div>
 
       {/* Kanban Board Columns Container */}
-      <div className="flex gap-4 overflow-x-auto pb-4">
+      <div className="flex gap-6 overflow-x-auto pb-6">
         {STATUSES.map((status) => (
           <KanbanColumn
             key={status}
@@ -282,14 +283,14 @@ export default function ProjectBoard() {
       >
         <form onSubmit={handleInvite} className="space-y-4">
           <Input
-            label="Email"
+            label="Email address"
             type="email"
             placeholder="colleague@devcollab.io"
             value={inviteEmail}
             onChange={(e) => setInviteEmail(e.target.value)}
             autoFocus
           />
-          <div className="flex justify-end gap-2.5 pt-2">
+          <div className="flex justify-end gap-3 pt-3">
             <Button
               type="button"
               variant="ghost"
@@ -305,20 +306,20 @@ export default function ProjectBoard() {
         </form>
 
         {membersList.length > 0 && (
-          <div className="mt-5 pt-4 border-t border-[var(--color-rule)]">
-            <div className="flex items-center gap-1.5 mb-2.5 text-xs font-mono text-[var(--color-muted)]">
-              <Users className="h-3.5 w-3.5" aria-hidden="true" />
+          <div className="mt-6 pt-4 border-t border-[var(--color-rule)]">
+            <div className="flex items-center gap-2 mb-3 text-xs font-mono text-[var(--color-muted)]">
+              <Users className="h-4 w-4" aria-hidden="true" />
               <span>Workspace members ({membersList.length})</span>
             </div>
-            <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
+            <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
               {membersList.map((m, i) => (
                 <div
                   key={m._id || i}
-                  className="flex items-center gap-2.5 p-1.5 rounded-[var(--radius-pill)] hover:bg-[var(--color-paper-3)] transition-colors"
+                  className="flex items-center gap-3 p-2 rounded-[var(--radius-pill)] hover:bg-[var(--color-paper-3)] transition-colors"
                 >
                   <Avatar src={m.avatar} name={m.name || ''} size="sm" />
                   <div className="min-w-0 flex-1 text-left">
-                    <p className="text-xs font-medium text-[var(--color-ink)] truncate">
+                    <p className="text-xs font-semibold text-[var(--color-ink)] truncate">
                       {m.name || 'Member'}
                     </p>
                     <p className="text-[11px] font-mono text-[var(--color-muted)] truncate">

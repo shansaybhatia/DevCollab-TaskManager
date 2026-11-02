@@ -58,17 +58,17 @@ export default function Profile() {
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
-        <h1 className="text-2xl font-semibold text-[var(--color-ink)] tracking-tight">
-          Profile
+        <h1 className="text-3xl font-bold text-[var(--color-ink)] tracking-tight">
+          Developer Profile
         </h1>
-        <p className="text-xs text-[var(--color-muted)] mt-1 font-mono">
-          Developer account settings and preferences
+        <p className="text-sm text-[var(--color-muted)] mt-1.5">
+          Manage your account credentials and personal preferences.
         </p>
       </div>
 
-      <div className="console-panel p-6 space-y-6">
+      <div className="glass-panel p-8 space-y-6 shadow-2xl">
         {/* Avatar */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-5">
           <div className="relative group">
             <Avatar
               src={user?.avatar}
@@ -82,7 +82,7 @@ export default function Profile() {
               className="absolute inset-0 flex items-center justify-center rounded-[var(--radius-pill)] bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
               aria-label="Upload avatar image"
             >
-              <Camera className="h-5 w-5 text-white" aria-hidden="true" />
+              <Camera className="h-6 w-6 text-white" aria-hidden="true" />
             </button>
             <input
               ref={fileRef}
@@ -93,10 +93,10 @@ export default function Profile() {
             />
           </div>
           <div>
-            <p className="font-semibold text-sm text-[var(--color-ink)]">
+            <p className="font-bold text-base text-[var(--color-ink)]">
               {user?.name || 'Developer'}
             </p>
-            <p className="text-xs text-[var(--color-muted)] font-mono">
+            <p className="text-xs text-[var(--color-muted)] font-mono mt-0.5">
               {user?.email}
             </p>
           </div>
@@ -105,14 +105,14 @@ export default function Profile() {
         {/* Form */}
         <form onSubmit={handleSave} className="space-y-4">
           <Input
-            label="Name"
+            label="Full name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Your name"
           />
 
-          <div className="space-y-1.5 text-left">
-            <label className="block text-xs font-medium text-[var(--color-ink-2)]">
+          <div className="space-y-2 text-left">
+            <label className="block text-xs font-medium text-[var(--color-ink-2)] tracking-wide">
               Bio
             </label>
             <textarea
@@ -120,15 +120,15 @@ export default function Profile() {
               onChange={(e) => setBio(e.target.value)}
               placeholder="Engineering focus, team role, or notes..."
               rows={3}
-              className="w-full rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-3)] px-3.5 py-2.5
+              className="w-full rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-2)] px-4 py-3
                 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-muted)]
-                focus-visible:border-[var(--color-focus)] focus-visible:outline-none
-                transition-colors resize-none"
+                focus:border-[var(--color-focus)] focus:bg-[var(--color-paper-3)] focus:outline-none
+                transition-colors duration-200 resize-none"
             />
           </div>
 
-          <div className="flex justify-end pt-2">
-            <Button type="submit" isLoading={isSaving} icon={Save} size="sm">
+          <div className="flex justify-end pt-3">
+            <Button type="submit" isLoading={isSaving} icon={Save} size="md">
               Save changes
             </Button>
           </div>

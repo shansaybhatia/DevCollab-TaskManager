@@ -26,11 +26,11 @@ export default function TaskCard({ task, onEdit, onDelete }) {
     task.status !== 'completed';
 
   return (
-    <div className="console-panel p-3.5 space-y-2.5 relative group hover:border-[var(--color-rule-2)] transition-colors">
+    <div className="glass-card-interactive p-4 space-y-3 relative group">
       {/* Top Bar: Grip + Priority + Menu */}
       <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-1.5">
-          <GripVertical className="h-3.5 w-3.5 text-[var(--color-muted)] opacity-40 group-hover:opacity-100 transition-opacity" aria-hidden="true" />
+        <div className="flex items-center gap-2">
+          <GripVertical className="h-4 w-4 text-[var(--color-muted)] opacity-40 group-hover:opacity-100 transition-opacity" aria-hidden="true" />
           <Badge variant={task.priority}>{task.priority}</Badge>
         </div>
 
@@ -43,12 +43,12 @@ export default function TaskCard({ task, onEdit, onDelete }) {
             className="p-1 rounded-[var(--radius-pill)] text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper-3)] transition-colors cursor-pointer"
             aria-label="Task options"
           >
-            <MoreVertical className="h-3.5 w-3.5" aria-hidden="true" />
+            <MoreVertical className="h-4 w-4" aria-hidden="true" />
           </button>
 
           {showMenu && (
             <div
-              className="absolute right-0 top-7 z-[var(--z-dropdown)] w-32 rounded-[var(--radius-pill)] border border-[var(--color-rule)] bg-[var(--color-paper-2)] shadow-xl py-1 text-xs"
+              className="absolute right-0 top-8 z-[var(--z-dropdown)] w-36 rounded-[var(--radius-card)] border border-[var(--color-rule)] bg-[var(--color-paper-2)] shadow-2xl py-1 text-xs"
               onClick={(e) => e.stopPropagation()}
             >
               <button
@@ -56,17 +56,17 @@ export default function TaskCard({ task, onEdit, onDelete }) {
                   setShowMenu(false);
                   onEdit(task);
                 }}
-                className="w-full flex items-center gap-2 px-3 py-1.5 text-[var(--color-ink)] hover:bg-[var(--color-paper-3)] transition-colors cursor-pointer"
+                className="w-full flex items-center gap-2 px-3.5 py-2 text-[var(--color-ink)] hover:bg-[var(--color-paper-3)] transition-colors cursor-pointer"
               >
                 <Edit3 className="h-3.5 w-3.5" aria-hidden="true" />
-                <span>Edit</span>
+                <span>Edit task</span>
               </button>
               <button
                 onClick={() => {
                   setShowMenu(false);
                   onDelete(task._id);
                 }}
-                className="w-full flex items-center gap-2 px-3 py-1.5 text-[var(--color-bad)] hover:bg-[var(--color-bad-soft)] transition-colors cursor-pointer"
+                className="w-full flex items-center gap-2 px-3.5 py-2 text-[var(--color-error)] hover:bg-[color-mix(in_oklch,var(--color-error)_15%,transparent)] transition-colors cursor-pointer"
               >
                 <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
                 <span>Delete</span>
@@ -77,26 +77,26 @@ export default function TaskCard({ task, onEdit, onDelete }) {
       </div>
 
       {/* Title */}
-      <h4 className="text-xs font-semibold text-[var(--color-ink)] leading-snug line-clamp-2">
+      <h4 className="text-sm font-semibold text-[var(--color-ink)] leading-snug line-clamp-2">
         {task.title}
       </h4>
 
       {/* Description */}
       {task.description && (
-        <p className="text-[11px] text-[var(--color-muted)] line-clamp-2 leading-relaxed">
+        <p className="text-xs text-[var(--color-muted)] line-clamp-2 leading-relaxed">
           {task.description}
         </p>
       )}
 
       {/* Metadata */}
-      <div className="flex items-center justify-between pt-2 border-t border-[var(--color-rule)] text-[11px] font-mono">
+      <div className="flex items-center justify-between pt-3 border-t border-[var(--color-rule)] text-xs font-mono">
         {task.duedate ? (
           <div
-            className={`inline-flex items-center gap-1 ${
-              isOverdue ? 'text-[var(--color-bad)]' : 'text-[var(--color-muted)]'
+            className={`inline-flex items-center gap-1.5 ${
+              isOverdue ? 'text-[var(--color-error)]' : 'text-[var(--color-muted)]'
             }`}
           >
-            <Calendar className="h-3 w-3" aria-hidden="true" />
+            <Calendar className="h-3.5 w-3.5" aria-hidden="true" />
             <span>{formatDate(task.duedate)}</span>
           </div>
         ) : (
@@ -108,10 +108,10 @@ export default function TaskCard({ task, onEdit, onDelete }) {
             src={task.assignedTo.avatar}
             name={task.assignedTo.name || ''}
             size="sm"
-            className="!h-5 !w-5 !text-[9px]"
+            className="!h-6 !w-6 !text-[10px]"
           />
         ) : (
-          <span className="text-[10px] text-[var(--color-muted)]">unassigned</span>
+          <span className="text-[11px] text-[var(--color-muted)]">unassigned</span>
         )}
       </div>
     </div>
