@@ -13,9 +13,16 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // If we get 401 on a non-auth route, redirect to login
-      const isAuthRoute = error.config.url?.startsWith('/auth');
-      if (!isAuthRoute) {
+      const url = error.config?.url || '';
+      const isPublic =
+        url.startsWith('/auth') ||
+        url.includes('/users/me');
+
+      if (
+        !isPublic &&
+        window.location.pathname !== '/login' &&
+        window.location.pathname !== '/register'
+      ) {
         window.location.href = '/login';
       }
     }

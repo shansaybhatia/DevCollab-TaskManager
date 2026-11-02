@@ -35,6 +35,7 @@ export default function ProjectBoard() {
     updateTask,
     deleteTask,
     handleSocketTaskUpdate,
+    handleSocketTaskDelete,
     clearTasks,
   } = useTaskStore();
   const { projects, fetchProjects, inviteMember } = useProjectStore();
@@ -67,8 +68,13 @@ export default function ProjectBoard() {
       handleSocketTaskUpdate(updatedTask);
     });
 
+    socket.on('taskDeleted', (deletedTaskId) => {
+      handleSocketTaskDelete(deletedTaskId);
+    });
+
     return () => {
       socket.off('taskUpdated');
+      socket.off('taskDeleted');
     };
   }, [projectId]);
 

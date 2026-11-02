@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import api from '../lib/api';
 
-const useTaskStore = create((set, get) => ({
+const useTaskStore = create((set) => ({
   tasks: [],
   isLoading: false,
 
@@ -19,7 +19,7 @@ const useTaskStore = create((set, get) => ({
   // Create a task
   createTask: async (taskData) => {
     const { data } = await api.post('/tasks', taskData);
-    set((state) => ({ tasks: [...state.tasks, data] }));
+    set((state) => ({ tasks: [data, ...state.tasks] }));
     return data;
   },
 
@@ -46,6 +46,13 @@ const useTaskStore = create((set, get) => ({
       tasks: state.tasks.map((t) =>
         t._id === updatedTask._id ? updatedTask : t
       ),
+    }));
+  },
+
+  // Handle real-time task deletion from socket
+  handleSocketTaskDelete: (deletedTaskId) => {
+    set((state) => ({
+      tasks: state.tasks.filter((t) => t._id !== deletedTaskId),
     }));
   },
 
