@@ -16,16 +16,12 @@ export default function Profile() {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    if (!name.trim()) {
-      toast.error('Name is required');
-      return;
-    }
     setIsSaving(true);
     try {
       await updateProfile({ name: name.trim(), bio: bio.trim() });
       toast.success('Profile updated');
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Update failed');
+      toast.error(err.response?.data?.message || 'Failed to update profile');
     } finally {
       setIsSaving(false);
     }
@@ -39,8 +35,8 @@ export default function Profile() {
       toast.error('Please select an image file');
       return;
     }
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error('Image must be under 5MB');
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error('Avatar size must be less than 2MB');
       return;
     }
 
@@ -49,24 +45,24 @@ export default function Profile() {
       await uploadAvatar(file);
       toast.success('Avatar updated');
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Upload failed');
+      toast.error(err.response?.data?.message || 'Failed to upload avatar');
     } finally {
       setIsUploading(false);
     }
   };
 
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="max-w-3xl space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-[var(--color-ink)] tracking-tight">
+        <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
           Developer Profile
         </h1>
-        <p className="text-sm text-[var(--color-muted)] mt-1.5">
+        <p className="text-sm text-slate-500 mt-1.5">
           Manage your account credentials and personal preferences.
         </p>
       </div>
 
-      <div className="glass-panel p-8 space-y-6 shadow-2xl">
+      <div className="glass-panel p-8 space-y-6 shadow-xl border-slate-200/90 bg-white/90">
         {/* Avatar */}
         <div className="flex items-center gap-5">
           <div className="relative group">
@@ -79,7 +75,7 @@ export default function Profile() {
               type="button"
               onClick={() => fileRef.current?.click()}
               disabled={isUploading}
-              className="absolute inset-0 flex items-center justify-center rounded-full bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+              className="absolute inset-0 flex items-center justify-center rounded-full bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
               aria-label="Upload avatar image"
             >
               <Camera className="h-6 w-6 text-white" aria-hidden="true" />
@@ -93,10 +89,10 @@ export default function Profile() {
             />
           </div>
           <div>
-            <p className="font-bold text-base text-[var(--color-ink)]">
+            <p className="font-bold text-base text-slate-900">
               {user?.name || 'Developer'}
             </p>
-            <p className="text-xs text-[var(--color-muted)] font-mono mt-0.5">
+            <p className="text-xs text-slate-500 font-mono mt-0.5">
               {user?.email}
             </p>
           </div>
@@ -111,19 +107,19 @@ export default function Profile() {
             placeholder="Your name"
           />
 
-          <div className="space-y-2 text-left">
-            <label className="block text-xs font-medium text-[var(--color-ink-2)] tracking-wide">
+          <div className="space-y-1.5 text-left">
+            <label className="block text-xs font-semibold text-slate-700 tracking-wide">
               Bio
             </label>
             <textarea
               value={bio}
               onChange={(e) => setBio(e.target.value)}
-              placeholder="Engineering focus, team role, or notes..."
+              placeholder="Engineering focus, team role, or notes…"
               rows={3}
-              className="w-full rounded-[var(--radius-btn)] border border-[var(--color-rule-2)] bg-[var(--color-paper-2)] px-4 py-2.5
-                text-sm text-[var(--color-ink)] placeholder:text-[var(--color-muted)]
-                focus:border-[var(--color-focus)] focus:bg-[var(--color-paper-3)] focus:outline-none focus:ring-1 focus:ring-[var(--color-focus)]
-                transition-colors duration-200 resize-none"
+              className="w-full rounded-[var(--radius-btn)] border border-slate-200 bg-white px-4 py-2.5
+                text-sm text-slate-900 placeholder:text-slate-400
+                focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20
+                transition-colors duration-200 resize-none shadow-xs"
             />
           </div>
 

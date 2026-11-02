@@ -32,17 +32,17 @@ export default function Modal({ isOpen, onClose, title, children, size = 'md' })
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[var(--z-modal)] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
+      className="fixed inset-0 z-[var(--z-modal)] flex items-center justify-center p-4 bg-slate-900/45 backdrop-blur-xs"
       onClick={(e) => e.target === overlayRef.current && onClose()}
     >
       <div
-        className={`${sizeClasses[size]} w-full glass-panel bg-[var(--color-paper-2)]/95 border border-[var(--color-rule-2)] rounded-[var(--radius-card)] shadow-2xl`}
+        className={`${sizeClasses[size]} w-full glass-panel bg-white/95 border border-slate-200 shadow-2xl rounded-[var(--radius-card)]`}
       >
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-rule)]">
-          <h2 className="text-base font-bold text-[var(--color-ink)] tracking-tight">{title}</h2>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+          <h2 className="text-base font-bold text-slate-900 tracking-tight">{title}</h2>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-[var(--radius-btn)] text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-paper-3)] transition-colors cursor-pointer"
+            className="p-1.5 rounded-[var(--radius-btn)] text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
             aria-label="Close dialog"
           >
             <X className="h-4.5 w-4.5" aria-hidden="true" />

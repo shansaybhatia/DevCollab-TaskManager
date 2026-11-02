@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none">
-  <rect width="48" height="48" rx="12" fill="oklch(14% 0.016 255)"/>
-  <rect x="0.5" y="0.5" width="47" height="47" rx="11.5" stroke="oklch(28% 0.018 255)"/>
-  <!-- DevCollab Modern Monogram in Indigo & Cyan -->
-  <path d="M12 14h10c6.627 0 12 5.373 12 12s-5.373 12-12 12H12V14z" stroke="oklch(35% 0.022 255)" stroke-width="2.5" stroke-linejoin="round"/>
-  <path d="M16 19h6c3.866 0 7 3.134 7 7s-3.134 7-7 7h-6V19z" fill="oklch(63% 0.22 265 / 0.22)" stroke="oklch(63% 0.22 265)" stroke-width="2"/>
-  <circle cx="22" cy="26" r="3" fill="oklch(63% 0.22 265)"/>
-  <path d="M28 17l6 9-6 9" stroke="oklch(74% 0.14 220)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect width="48" height="48" rx="12" fill="#e0e7ff"/>
+  <rect x="0.5" y="0.5" width="47" height="47" rx="11.5" stroke="#c7d2fe"/>
+  <!-- DevCollab Dusk Light Monogram -->
+  <path d="M12 14h10c6.627 0 12 5.373 12 12s-5.373 12-12 12H12V14z" stroke="#818cf8" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M16 19h6c3.866 0 7 3.134 7 7s-3.134 7-7 7h-6V19z" fill="rgba(99, 102, 241, 0.2)" stroke="#4f46e5" stroke-width="2"/>
+  <circle cx="22" cy="26" r="3" fill="#f59e0b"/>
+  <path d="M28 17l6 9-6 9" stroke="#4f46e5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

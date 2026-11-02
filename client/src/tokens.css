@@ -1,52 +1,50 @@
 :root {
-  color-scheme: dark;
+  color-scheme: light;
   --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 36px; --space-2xl: 56px; --space-3xl: 80px; --space-4xl: 120px;
   --text-xs: 0.75rem; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.15rem; --text-xl: 1.35rem; --text-2xl: 1.65rem; --text-3xl: 2.15rem;
   --text-display-s: 1.5rem; --text-display: 2rem; --text-section: 1.25rem; --text-title: 1.05rem; --text-lead: 1rem;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --dur-micro: 120ms; --dur-short: 200ms; --dur-long: 380ms;
-  --color-error: oklch(65% 0.22 25);
-  --color-success: oklch(72% 0.18 145);
+  --color-error: oklch(62% 0.22 25);
+  --color-success: oklch(65% 0.18 150);
   --container: 1600px; --gutter: 48px; --gap-columns: 28px;
   --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
 
-  /* Deep Slate/Obsidian Canvas */
-  --color-paper: oklch(14% 0.016 255);
-  --color-paper-2: oklch(18% 0.020 255);
-  --color-paper-3: oklch(23% 0.024 255);
-  --color-slot: oklch(23% 0.024 255);
+  /* Hallmark Light Dusk Canvas & Bone Wells */
+  --color-paper: oklch(97.5% 0.008 260);
+  --color-paper-2: oklch(99% 0.004 260);
+  --color-paper-3: oklch(95% 0.010 260);
+  --color-slot: oklch(94% 0.010 260);
 
-  /* High-Contrast Titanium Typography */
-  --color-ink: oklch(98% 0.005 240);
-  --color-ink-2: oklch(86% 0.012 245);
-  --color-muted: oklch(68% 0.018 245);
+  /* Deep Rich Titanium Ink Typography */
+  --color-ink: oklch(18% 0.022 265);
+  --color-ink-2: oklch(34% 0.024 265);
+  --color-muted: oklch(52% 0.022 265);
 
-  /* Subtle Hairline Borders */
-  --color-rule: oklch(28% 0.018 255);
-  --color-rule-2: oklch(35% 0.022 255);
-  --color-light: oklch(98% 0.005 240);
-  --color-shade: oklch(9% 0.015 255);
+  /* Clean Hairline Light Rules */
+  --color-rule: oklch(89% 0.010 260);
+  --color-rule-2: oklch(84% 0.014 260);
+  --color-light: oklch(99.5% 0.003 260);
+  --color-shade: oklch(15% 0.02 265);
 
-  /* Refined Modern Electric Indigo (Easy on the eyes, premium SaaS) */
-  --color-accent: oklch(58% 0.24 265);
-  --color-accent-ink: oklch(98% 0.005 240);
-  --color-accent-hi: oklch(64% 0.22 265);
-  --color-accent-deep: oklch(46% 0.24 265);
-  --color-accent-soft: oklch(58% 0.24 265 / 0.16);
-  --color-focus: oklch(58% 0.24 265);
+  /* Dusk Periwinkle & Electric Indigo Accent */
+  --color-accent: oklch(52% 0.22 274);
+  --color-accent-ink: oklch(99% 0.004 260);
+  --color-accent-hi: oklch(47% 0.24 274);
+  --color-accent-deep: oklch(40% 0.22 274);
+  --color-accent-soft: oklch(52% 0.22 274 / 0.12);
+  --color-focus: oklch(52% 0.22 274);
 
-  /* Secondary Accents */
-  --point-lo: oklch(42% 0.04 245);
-  --point-mid: oklch(74% 0.14 220);
-  --point-hi: oklch(96% 0.02 215);
-  --color-accent-2: oklch(74% 0.14 220);
-  --color-amber: oklch(78% 0.16 75);
+  /* Secondary Dusk Signals (Apricot / Sky) */
+  --color-accent-2: oklch(74% 0.14 55);
+  --point-mid: oklch(62% 0.16 230);
+  --color-amber: oklch(74% 0.14 55);
 
-  /* Glassmorphism System */
-  --glass: oklch(18% 0.018 255 / 0.72);
-  --glass-blur: 20px;
-  --glass-hi: inset 0 1px 0 oklch(100% 0 0 / 0.10), inset 0 0 0 1px oklch(100% 0 0 / 0.04);
-  --shadow-card: 0 1px 0 oklch(100% 0 0 / 0.06) inset, 0 25px 50px -15px oklch(8% 0.02 255 / 0.7);
+  /* Frosted Light Glassmorphism */
+  --glass: oklch(100% 0 0 / 0.78);
+  --glass-blur: 24px;
+  --glass-hi: inset 0 1px 0 oklch(100% 0 0 / 0.95), inset 0 0 0 1px oklch(100% 0 0 / 0.6);
+  --shadow-card: 0 1px 3px 0 oklch(0% 0 0 / 0.04), 0 20px 40px -15px oklch(0% 0 0 / 0.07);
 
   /* Typography & Geometric Styling */
   --font-display: "Geologica", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
@@ -56,7 +54,6 @@
   --radius-btn: 9px;
   --radius-pill: 999px;
   --rule-hair: 1px;
-  --tick: 10px;
   --tracking-display: -0.025em;
   --display-weight: 600;
 }

@@ -218,7 +218,7 @@ export default function ProjectBoard() {
     return (
       <div className="flex flex-col items-center justify-center h-96 gap-4">
         <Spinner size="lg" />
-        <span className="text-xs text-slate-400">
+        <span className="text-xs text-slate-500">
           Loading sprint board telemetry…
         </span>
       </div>
@@ -230,11 +230,11 @@ export default function ProjectBoard() {
   return (
     <div className="space-y-6">
       {/* Board Header Bar */}
-      <div className="glass-panel p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl border-slate-800">
+      <div className="glass-panel p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm border-slate-200/90 bg-white/85">
         <div className="flex items-center gap-4">
           <button
             onClick={() => navigate('/projects')}
-            className="p-2 rounded-[var(--radius-btn)] border border-slate-700 bg-slate-800/80 text-slate-300 hover:text-white hover:border-slate-500 transition-colors cursor-pointer"
+            className="p-2 rounded-[var(--radius-btn)] border border-slate-200 bg-white text-slate-600 hover:text-slate-900 hover:border-slate-300 transition-colors cursor-pointer shadow-xs"
             aria-label="Back to projects"
           >
             <ArrowLeft className="h-4.5 w-4.5" aria-hidden="true" />
@@ -242,16 +242,16 @@ export default function ProjectBoard() {
 
           <div>
             <div className="flex items-center gap-2.5">
-              <h1 className="text-xl font-bold text-white tracking-tight">
+              <h1 className="text-xl font-bold text-slate-900 tracking-tight">
                 {project?.title || 'Project sprint board'}
               </h1>
-              <span className="inline-flex items-center gap-1.5 text-xs text-slate-300 bg-slate-800 px-2.5 py-0.5 rounded-full border border-slate-700 font-medium">
-                <Radio className="h-3 w-3 text-emerald-400 animate-pulse" aria-hidden="true" />
+              <span className="inline-flex items-center gap-1.5 text-xs text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200 font-medium">
+                <Radio className="h-3 w-3 text-emerald-500 animate-pulse" aria-hidden="true" />
                 <span>Live sync</span>
               </span>
             </div>
             {project?.description && (
-              <p className="text-xs text-slate-400 mt-1 line-clamp-1">
+              <p className="text-xs text-slate-500 mt-1 line-clamp-1">
                 {project.description}
               </p>
             )}
@@ -267,7 +267,7 @@ export default function ProjectBoard() {
                 src={m.avatar}
                 name={m.name || 'Member'}
                 size="sm"
-                className="ring-2 ring-slate-900"
+                className="ring-2 ring-white"
               />
             ))}
           </div>
@@ -351,21 +351,21 @@ export default function ProjectBoard() {
               </div>
             </form>
           ) : (
-            <div className="p-3 rounded-lg bg-slate-800/50 border border-slate-700/60 text-xs text-slate-400 flex items-center gap-2">
-              <Shield className="h-4 w-4 text-indigo-400 shrink-0" />
+            <div className="p-3 rounded-lg bg-indigo-50/60 border border-indigo-100 text-xs text-indigo-800 flex items-center gap-2">
+              <Shield className="h-4 w-4 text-indigo-600 shrink-0" />
               <span>You are viewing this team roster as a member. Only the owner can invite or remove members.</span>
             </div>
           )}
 
           {/* Members Roster List */}
-          <div className="pt-2 border-t border-slate-800">
-            <div className="flex items-center justify-between mb-3 text-xs text-slate-400">
+          <div className="pt-2 border-t border-slate-100">
+            <div className="flex items-center justify-between mb-3 text-xs text-slate-500">
               <span className="flex items-center gap-1.5 font-medium">
-                <Users className="h-4 w-4 text-indigo-400" aria-hidden="true" />
+                <Users className="h-4 w-4 text-indigo-600" aria-hidden="true" />
                 Workspace members ({membersList.length})
               </span>
               {isCurrentUserOwner && (
-                <span className="text-[11px] text-slate-500">
+                <span className="text-[11px] text-slate-400">
                   Owner permissions active
                 </span>
               )}
@@ -378,17 +378,17 @@ export default function ProjectBoard() {
                 return (
                   <div
                     key={m._id}
-                    className="flex items-center justify-between p-2.5 rounded-lg bg-slate-900/60 border border-slate-800 hover:border-slate-700 transition-colors"
+                    className="flex items-center justify-between p-2.5 rounded-lg bg-white border border-slate-200/80 hover:border-slate-300 transition-colors shadow-xs"
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       <Avatar src={m.avatar} name={m.name || ''} size="sm" />
                       <div className="min-w-0 text-left">
                         <div className="flex items-center gap-2">
-                          <p className="text-xs font-semibold text-white truncate">
+                          <p className="text-xs font-semibold text-slate-900 truncate">
                             {m.name || 'Member'}
                           </p>
                           {m._id === currentUserId && (
-                            <span className="text-[10px] text-slate-400">(You)</span>
+                            <span className="text-[10px] text-slate-500">(You)</span>
                           )}
                         </div>
                         <p className="text-[11px] text-slate-400 truncate">
@@ -406,7 +406,7 @@ export default function ProjectBoard() {
                       {isCurrentUserOwner && !isThisMemberOwner && (
                         <button
                           onClick={() => handleRemoveMember(m._id, m.name)}
-                          className="p-1.5 rounded-md text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                          className="p-1.5 rounded-md text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
                           title={`Remove ${m.name || 'member'} from workspace`}
                           aria-label={`Remove ${m.name || 'member'}`}
                         >

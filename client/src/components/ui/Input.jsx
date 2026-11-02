@@ -5,7 +5,7 @@ const Input = forwardRef(
     return (
       <div className="space-y-1.5 text-left">
         {label && (
-          <label className="block text-xs font-semibold text-slate-300 tracking-wide">
+          <label className="block text-xs font-semibold text-slate-700 tracking-wide">
             {label}
           </label>
         )}
@@ -17,19 +17,19 @@ const Input = forwardRef(
           )}
           <input
             ref={ref}
-            className={`w-full rounded-[var(--radius-btn)] border border-slate-700/80 bg-slate-900/60 px-4 py-2.5
-              text-sm text-slate-100 placeholder:text-slate-500
-              focus:border-indigo-500 focus:bg-slate-900/90 focus:outline-none focus:ring-2 focus:ring-indigo-500/25
-              transition-colors duration-200
+            className={`w-full rounded-[var(--radius-btn)] border border-slate-200 bg-white/90 px-4 py-2.5
+              text-sm text-slate-900 placeholder:text-slate-400
+              focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20
+              transition-colors duration-200 shadow-xs
               disabled:opacity-40 disabled:cursor-not-allowed
               ${Icon ? 'pl-10' : ''}
-              ${error ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/25' : ''}
+              ${error ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-500/20' : ''}
               ${className}`}
             {...props}
           />
         </div>
         {error && (
-          <p className="text-xs text-rose-400 mt-1">{error}</p>
+          <p className="text-xs text-rose-500 mt-1">{error}</p>
         )}
       </div>
     );

@@ -36,12 +36,12 @@ export default function Login() {
   };
 
   return (
-    <div className="glass-panel p-8 sm:p-10 space-y-6 shadow-2xl border-slate-800 bg-slate-900/80 backdrop-blur-2xl">
+    <div className="glass-panel p-8 sm:p-10 space-y-6 shadow-xl border-slate-200/90 bg-white/90 backdrop-blur-2xl">
       <div className="space-y-1.5">
-        <h2 className="text-2xl font-bold text-white tracking-tight">
+        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
           Sign in
         </h2>
-        <p className="text-sm text-slate-400 leading-relaxed">
+        <p className="text-sm text-slate-500 leading-relaxed">
           Access your real-time developer workspaces and sprint boards.
         </p>
       </div>
@@ -59,7 +59,7 @@ export default function Login() {
         />
 
         <div className="space-y-1.5 text-left">
-          <label className="block text-xs font-semibold text-slate-300 tracking-wide">
+          <label className="block text-xs font-semibold text-slate-700 tracking-wide">
             Password
           </label>
           <div className="relative">
@@ -71,16 +71,16 @@ export default function Login() {
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-[var(--radius-btn)] border border-slate-700/80 bg-slate-900/60 pl-10 pr-10 py-2.5
-                text-sm text-white placeholder:text-slate-500
-                focus:border-indigo-500 focus:bg-slate-900/90 focus:outline-none focus:ring-2 focus:ring-indigo-500/25
-                transition-colors duration-200"
+              className="w-full rounded-[var(--radius-btn)] border border-slate-200 bg-white/90 pl-10 pr-10 py-2.5
+                text-sm text-slate-900 placeholder:text-slate-400
+                focus:border-indigo-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20
+                transition-colors duration-200 shadow-xs"
               required
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-white cursor-pointer"
+              className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-700 cursor-pointer"
               aria-label="Toggle password visibility"
             >
               {showPassword ? (
@@ -100,17 +100,17 @@ export default function Login() {
             className="w-full text-sm font-semibold tracking-wide"
           >
             <span>Sign in to workspace</span>
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            <ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
           </Button>
         </div>
       </form>
 
-      <div className="pt-4 border-t border-slate-800 text-center">
-        <p className="text-xs text-slate-400">
+      <div className="pt-4 border-t border-slate-100 text-center">
+        <p className="text-xs text-slate-500">
           Need a developer account?{' '}
           <Link
             to="/register"
-            className="font-semibold text-indigo-400 hover:underline hover:text-indigo-300 transition-colors inline-flex items-center gap-1"
+            className="font-semibold text-indigo-600 hover:underline hover:text-indigo-700 transition-colors inline-flex items-center gap-1"
           >
             Create account
           </Link>
