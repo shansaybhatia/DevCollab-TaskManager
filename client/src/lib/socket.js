@@ -1,10 +1,10 @@
-import { io } from 'socket.io-client';
+import { io } from "socket.io-client";
 
 let socket = null;
 
 export const getSocket = () => {
   if (!socket) {
-    socket = io('/', {
+    socket = io(import.meta.env.VITE_SOCKET_URL || "/", {
       withCredentials: true,
       autoConnect: false,
     });
@@ -29,10 +29,10 @@ export const disconnectSocket = () => {
 export const joinProject = (projectId) => {
   const s = getSocket();
   if (s.connected) {
-    s.emit('joinProject', projectId);
+    s.emit("joinProject", projectId);
   } else {
-    s.once('connect', () => {
-      s.emit('joinProject', projectId);
+    s.once("connect", () => {
+      s.emit("joinProject", projectId);
     });
   }
 };
