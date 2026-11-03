@@ -39,7 +39,7 @@ app.use(
   cors({
     origin: allowedOrigins,
     credentials: true,
-  })
+  }),
 );
 
 app.use(express.json());
@@ -57,6 +57,13 @@ app.use("/api/users", userRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "OK",
+    message: "DevCollab backend is running",
+  });
+});
 
 app.get("/", (req, res) => {
   res.send("DevCollab TaskManager API is running!");
